@@ -1,103 +1,232 @@
-import Image from "next/image";
+"use client";
+
+import { useEffect, useRef } from "react";
+import Link from "next/link";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+// Register the ScrollTrigger plugin
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const heroRef = useRef(null);
+  const aboutRef = useRef(null);
+  const servicesRef = useRef(null);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  // GSAP animations
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    // Hero section animations
+    const heroTl = gsap.timeline();
+    
+    heroTl.from(".hero-title span", {
+      opacity: 0,
+      y: 50,
+      stagger: 0.1,
+      duration: 0.8,
+      ease: "power3.out"
+    });
+    
+    heroTl.from(".hero-subtitle", {
+      opacity: 0, 
+      y: 20,
+      duration: 0.5,
+      ease: "power3.out"
+    }, "-=0.2");
+    
+    heroTl.from(".hero-shape", {
+      opacity: 0,
+      scale: 0.8,
+      duration: 1,
+      ease: "power3.out"
+    }, "-=0.5");
+    
+    heroTl.from(".hero-cta", {
+      opacity: 0,
+      y: 20,
+      duration: 0.5,
+      ease: "power3.out"
+    }, "-=0.7");
+    
+    // About section animations with ScrollTrigger
+    gsap.from(".about-content", {
+      scrollTrigger: {
+        trigger: aboutRef.current,
+        start: "top 80%",
+      },
+      opacity: 0,
+      y: 30,
+      duration: 0.8,
+      ease: "power3.out"
+    });
+    
+    // Services section animations with ScrollTrigger
+    gsap.from(".service-card", {
+      scrollTrigger: {
+        trigger: servicesRef.current,
+        start: "top 80%",
+      },
+      opacity: 0,
+      y: 30,
+      stagger: 0.15,
+      duration: 0.6,
+      ease: "power3.out"
+    });
+    
+    return () => {
+      // Clean up ScrollTrigger instances
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, []);
+
+  return (
+    <div className="min-h-screen pt-20">
+      {/* Hero Section */}
+      <section
+        ref={heroRef}
+        className="relative min-h-[80vh] flex items-center justify-center overflow-hidden"
+      >
+        {/* Background shapes inspired by the church logo */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="hero-shape absolute -right-20 -top-20 w-96 h-96 bg-primary-gold/20 rounded-full blur-3xl"></div>
+          <div className="hero-shape absolute -left-20 top-1/2 w-72 h-72 bg-primary-brown/20 rounded-full blur-3xl"></div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="hero-title text-4xl md:text-5xl lg:text-6xl font-bold text-primary-brown mb-4">
+              <span className="inline-block">Templo</span>{" "}
+              <span className="inline-block text-primary-gold">Adoracion</span>{" "}
+              <span className="inline-block">Y</span>{" "}
+              <span className="inline-block text-primary-gold">Alabanza</span>
+            </h1>
+            
+            <p className="hero-subtitle text-lg md:text-xl text-text-dark/80 max-w-2xl mx-auto mb-8">
+              A welcoming community of faith in Wilmington, NC where everyone can experience God&apos;s love and grace.
+            </p>
+            
+            <div className="hero-cta space-x-4">
+              <Link
+                href="/services"
+                className="inline-block bg-primary-brown hover:bg-primary-brown/90 text-white font-medium py-3 px-6 rounded-md transition-colors"
+              >
+                Our Services
+              </Link>
+              <Link
+                href="/sermons"
+                className="inline-block bg-transparent border-2 border-primary-gold hover:bg-primary-gold/10 text-primary-gold font-medium py-3 px-6 rounded-md transition-colors"
+              >
+                Watch Sermons
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Welcome/About Section */}
+      <section
+        ref={aboutRef}
+        className="py-16 md:py-24 bg-accent-cream/30"
+      >
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="about-content">
+              <h2 className="text-3xl md:text-4xl font-bold text-primary-brown mb-6">
+                Welcome to Our Church
+              </h2>
+              
+              <p className="text-text-dark/80 mb-6">
+                Templo Adoracion Y Alabanza is a vibrant, Spirit-filled church serving the Wilmington community. 
+                We are dedicated to sharing God&apos;s love through worship, discipleship, and community service.
+              </p>
+              
+              <p className="text-text-dark/80 mb-6">
+                Our mission is to create an inclusive environment where people from all walks of life 
+                can encounter God, build meaningful relationships, and grow in their faith journey.
+              </p>
+              
+              <Link
+                href="/ministries"
+                className="inline-block font-medium text-primary-gold hover:text-primary-brown transition-colors"
+              >
+                Discover Our Ministries →
+              </Link>
+            </div>
+            
+            <div className="relative h-80 md:h-96 rounded-lg overflow-hidden shadow-xl bg-primary-brown/20 flex items-center justify-center">
+              <div className="text-primary-brown text-6xl">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-24 h-24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Service Times Section */}
+      <section
+        ref={servicesRef}
+        className="py-16 md:py-24"
+      >
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-primary-brown mb-4">
+              Join Us For Worship
+            </h2>
+            <p className="text-text-dark/80 max-w-2xl mx-auto">
+              We invite you to join us for our regular services and experience the presence of God in a welcoming community.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="service-card bg-white rounded-lg shadow-md p-8 text-center hover:shadow-lg transition-shadow">
+              <div className="text-primary-gold text-5xl mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="inline-block w-12 h-12">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-primary-brown mb-2">Sunday Worship</h3>
+              <p className="text-text-dark/80 mb-1">Every Sunday</p>
+              <p className="text-primary-gold font-medium">11:00 AM</p>
+            </div>
+            
+            <div className="service-card bg-white rounded-lg shadow-md p-8 text-center hover:shadow-lg transition-shadow">
+              <div className="text-primary-gold text-5xl mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="inline-block w-12 h-12">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-primary-brown mb-2">Prayer Night</h3>
+              <p className="text-text-dark/80 mb-1">Every Tuesday</p>
+              <p className="text-primary-gold font-medium">7:00 PM</p>
+            </div>
+            
+            <div className="service-card bg-white rounded-lg shadow-md p-8 text-center hover:shadow-lg transition-shadow">
+              <div className="text-primary-gold text-5xl mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="inline-block w-12 h-12">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-primary-brown mb-2">Bible Study/Youth Night</h3>
+              <p className="text-text-dark/80 mb-1">Every Friday</p>
+              <p className="text-primary-gold font-medium">7:00 PM</p>
+            </div>
+          </div>
+          
+          <div className="text-center mt-12">
+            <Link
+              href="/services"
+              className="inline-block bg-primary-brown hover:bg-primary-brown/90 text-white font-medium py-3 px-6 rounded-md transition-colors"
+            >
+              Learn More About Our Services
+            </Link>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
