@@ -14,6 +14,7 @@ export default function Home() {
   const heroRef = useRef(null);
   const aboutRef = useRef(null);
   const servicesRef = useRef(null);
+  const sermonRef = useRef(null);
 
   // GSAP animations
   useEffect(() => {
@@ -73,6 +74,18 @@ export default function Home() {
       y: 30,
       stagger: 0.15,
       duration: 0.6,
+      ease: "power3.out"
+    });
+
+    // Sermon section animations with ScrollTrigger
+    gsap.from(".sermon-section", {
+      scrollTrigger: {
+        trigger: sermonRef.current,
+        start: "top 80%",
+      },
+      opacity: 0,
+      y: 30,
+      duration: 0.8,
       ease: "power3.out"
     });
     
@@ -224,6 +237,87 @@ export default function Home() {
             >
               Learn More About Our Services
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Latest Sermon Section */}
+      <section
+        ref={sermonRef}
+        className="py-16 md:py-24 bg-primary-brown/5"
+      >
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12 sermon-section">
+            <h2 className="text-3xl md:text-4xl font-bold text-primary-brown mb-4">
+              Latest Sermon
+            </h2>
+            <p className="text-text-dark/80 max-w-2xl mx-auto">
+              Watch our most recent message and be encouraged in your faith journey.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center sermon-section">
+            <div className="aspect-video bg-black rounded-xl overflow-hidden shadow-xl">
+              <iframe
+                className="w-full h-full"
+                src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+                title="Latest Sermon"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowFullScreen
+              ></iframe>
+            </div>
+            
+            <div>
+              <h3 className="text-2xl font-bold text-primary-brown mb-2">
+                El Amor de Dios (The Love of God)
+              </h3>
+              <p className="text-primary-gold mb-4">
+                Pastor Roberto Martinez | May 7, 2023
+              </p>
+              <p className="text-text-dark/80 mb-6">
+                In this powerful message, Pastor Roberto explores the depth and dimensions of God&apos;s love for us and how it transforms our lives. Learn how God&apos;s love can heal wounds, restore relationships, and give you the courage to face any challenge.
+              </p>
+              <div className="space-y-4">
+                <Link
+                  href="/sermons"
+                  className="inline-flex items-center text-primary-gold hover:text-primary-brown transition-colors"
+                >
+                  <span className="mr-2">Watch more sermons</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-4 h-4">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Call to Action Section */}
+      <section className="py-16 md:py-24">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-accent-cream/30 rounded-xl p-8 md:p-12 text-center">
+            <h2 className="text-3xl md:text-4xl font-bold text-primary-brown mb-6">
+              Join Us This Sunday
+            </h2>
+                          <p className="text-lg text-text-dark/80 max-w-2xl mx-auto mb-8">
+                We&apos;d love to welcome you to our church family. Experience heartfelt worship, 
+                relevant teaching, and warm community.
+              </p>
+            <div className="space-x-4">
+              <Link
+                href="/services"
+                className="inline-block bg-primary-brown hover:bg-primary-brown/90 text-white font-medium py-3 px-6 rounded-md transition-colors"
+              >
+                Plan Your Visit
+              </Link>
+              <Link
+                href="#contact"
+                className="inline-block bg-transparent border-2 border-primary-gold hover:bg-primary-gold/10 text-primary-gold font-medium py-3 px-6 rounded-md transition-colors"
+              >
+                Contact Us
+              </Link>
+            </div>
           </div>
         </div>
       </section>
