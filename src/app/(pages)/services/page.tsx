@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import gsap from "gsap";
 import React from "react";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface ServiceInfo {
   day: string;
@@ -13,10 +14,12 @@ interface ServiceInfo {
 }
 
 export default function ServicesPage() {
+  const { t } = useLanguage();
+
   useEffect(() => {
     // Set initial styles directly to avoid flash of invisible content
     gsap.set([".page-header", ".service-card"], { 
-      opacity: 1,
+      opacity: 0,
       y: 0
     });
 
@@ -47,8 +50,8 @@ export default function ServicesPage() {
     {
       day: "Sunday",
       time: "11:00 AM",
-      title: "Sunday Worship Service",
-      description: "Join us for praise, worship, and an inspiring message from God's Word every Sunday morning.",
+      title: t('sunday_worship'),
+      description: t('sunday_desc'),
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-14 h-14">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
@@ -58,8 +61,8 @@ export default function ServicesPage() {
     {
       day: "Tuesday",
       time: "7:00 PM",
-      title: "Prayer Night",
-      description: "A powerful time of corporate prayer where we intercede for our community, church, and personal needs.",
+      title: t('prayer_night'),
+      description: t('prayer_desc'),
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-14 h-14">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
@@ -69,8 +72,8 @@ export default function ServicesPage() {
     {
       day: "Friday",
       time: "7:00 PM",
-      title: "Bible Study & Youth Night",
-      description: "Dive deeper into God's Word with our Bible study while youth enjoy a dedicated program focused on spiritual growth.",
+      title: t('bible_study'),
+      description: t('bible_desc'),
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-14 h-14">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
@@ -85,10 +88,10 @@ export default function ServicesPage() {
         {/* Header Section */}
         <div className="text-center mb-16 page-header">
           <h1 className="text-4xl md:text-5xl font-bold text-primary-brown mb-4">
-            Our Services
+            {t('our_services')}
           </h1>
           <p className="text-lg text-text-dark/80 max-w-2xl mx-auto">
-            Join us in worship, prayer, and study as we grow together in faith. All are welcome!
+            {t('join_us')}
           </p>
         </div>
 
@@ -120,37 +123,37 @@ export default function ServicesPage() {
         {/* What to Expect Section */}
         <div className="bg-accent-cream/20 rounded-xl p-8 md:p-12 mb-16">
           <h2 className="text-3xl font-bold text-primary-brown mb-6">
-            What to Expect
+            {t('what_to_expect')}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
               <h3 className="text-xl font-bold text-primary-gold mb-3">
-                Warm Welcome
+                {t('warm_welcome')}
               </h3>
               <p className="text-text-dark/80 mb-6">
-                You&apos;ll be greeted by our friendly welcome team who will help you get oriented and answer any questions you might have.
+                {t('welcome_desc')}
               </p>
               
               <h3 className="text-xl font-bold text-primary-gold mb-3">
-                Vibrant Worship
+                {t('vibrant_worship')}
               </h3>
               <p className="text-text-dark/80">
-                Experience lively praise and worship as we lift our voices to honor God through a blend of contemporary and traditional music.
+                {t('worship_desc')}
               </p>
             </div>
             <div>
               <h3 className="text-xl font-bold text-primary-gold mb-3">
-                Relevant Teaching
+                {t('relevant_teaching')}
               </h3>
               <p className="text-text-dark/80 mb-6">
-                Our messages are Bible-based and applicable to your daily life, with practical insights to help you grow in your faith.
+                {t('teaching_desc')}
               </p>
               
               <h3 className="text-xl font-bold text-primary-gold mb-3">
-                Community Connection
+                {t('community_connection')}
               </h3>
               <p className="text-text-dark/80">
-                We value building relationships and provide opportunities before and after services to connect with others.
+                {t('connection_desc')}
               </p>
             </div>
           </div>
@@ -159,14 +162,14 @@ export default function ServicesPage() {
         {/* Location Section */}
         <div className="text-center">
           <h2 className="text-3xl font-bold text-primary-brown mb-6">
-            Join Us at
+            {t('join_us_at')}
           </h2>
           <address className="not-italic text-lg text-text-dark/80 mb-4">
             209 S 7th Street<br />
             Wilmington, NC
           </address>
           <p className="text-primary-gold font-medium">
-            We look forward to welcoming you!
+            {t('welcome_you')}
           </p>
         </div>
       </div>

@@ -20,74 +20,104 @@ export default function Home() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     
+    // Set initial styles to prevent flash/jump of content
+    gsap.set(".hero-title span", { opacity: 1, y: 0 });
+    gsap.set(".hero-subtitle", { opacity: 1, y: 0 });
+    gsap.set(".hero-shape", { opacity: 1, scale: 1 });
+    gsap.set(".hero-cta", { opacity: 1, y: 0 });
+    gsap.set(".about-content", { opacity: 1, y: 0 });
+    gsap.set(".service-card", { opacity: 1, y: 0 });
+    gsap.set(".sermon-section", { opacity: 1, y: 0 });
+    
     // Hero section animations
     const heroTl = gsap.timeline();
     
-    heroTl.from(".hero-title span", {
+    heroTl.fromTo(".hero-title span", {
       opacity: 0,
       y: 50,
+    }, {
+      opacity: 1,
+      y: 0,
       stagger: 0.1,
       duration: 0.8,
       ease: "power3.out"
     });
     
-    heroTl.from(".hero-subtitle", {
+    heroTl.fromTo(".hero-subtitle", {
       opacity: 0, 
       y: 20,
+    }, {
+      opacity: 1,
+      y: 0,
       duration: 0.5,
       ease: "power3.out"
     }, "-=0.2");
     
-    heroTl.from(".hero-shape", {
+    heroTl.fromTo(".hero-shape", {
       opacity: 0,
       scale: 0.8,
+    }, {
+      opacity: 1,
+      scale: 1,
       duration: 1,
       ease: "power3.out"
     }, "-=0.5");
     
-    heroTl.from(".hero-cta", {
+    heroTl.fromTo(".hero-cta", {
       opacity: 0,
       y: 20,
+    }, {
+      opacity: 1,
+      y: 0,
       duration: 0.5,
       ease: "power3.out"
     }, "-=0.7");
     
     // About section animations with ScrollTrigger
-    gsap.from(".about-content", {
-      scrollTrigger: {
-        trigger: aboutRef.current,
-        start: "top 80%",
-      },
-      opacity: 0,
-      y: 30,
-      duration: 0.8,
-      ease: "power3.out"
-    });
+    gsap.fromTo(".about-content", 
+      { opacity: 0, y: 30 },
+      {
+        scrollTrigger: {
+          trigger: aboutRef.current,
+          start: "top 80%",
+        },
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out"
+      }
+    );
     
     // Services section animations with ScrollTrigger
-    gsap.from(".service-card", {
-      scrollTrigger: {
-        trigger: servicesRef.current,
-        start: "top 80%",
-      },
-      opacity: 0,
-      y: 30,
-      stagger: 0.15,
-      duration: 0.6,
-      ease: "power3.out"
-    });
+    gsap.fromTo(".service-card", 
+      { opacity: 0, y: 30 },
+      {
+        scrollTrigger: {
+          trigger: servicesRef.current,
+          start: "top 80%",
+        },
+        opacity: 1,
+        y: 0,
+        stagger: 0.15,
+        duration: 0.6,
+        ease: "power3.out"
+      }
+    );
 
     // Sermon section animations with ScrollTrigger
-    gsap.from(".sermon-section", {
-      scrollTrigger: {
-        trigger: sermonRef.current,
-        start: "top 80%",
-      },
-      opacity: 0,
-      y: 30,
-      duration: 0.8,
-      ease: "power3.out"
-    });
+    gsap.fromTo(".sermon-section", 
+      { opacity: 0, y: 30 },
+      {
+        scrollTrigger: {
+          trigger: sermonRef.current,
+          start: "top 80%",
+        },
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out"
+      }
+    );
     
     return () => {
       // Clean up ScrollTrigger instances

@@ -3,6 +3,7 @@ import { Lora, Raleway } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { LanguageProvider } from "@/context/LanguageContext";
 
 const lora = Lora({
   variable: "--font-lora",
@@ -31,9 +32,11 @@ export default function RootLayout({
       <body
         className={`${lora.variable} ${raleway.variable} antialiased min-h-screen flex flex-col`}
       >
-        <Navbar />
-        <main className="flex-grow">{children}</main>
-        <Footer />
+        <LanguageProvider>
+          <Navbar />
+          <main className="flex-grow">{children}</main>
+          <Footer />
+        </LanguageProvider>
       </body>
     </html>
   );

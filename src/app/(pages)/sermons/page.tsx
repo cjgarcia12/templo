@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import gsap from "gsap";
+import Image from "next/image";
 
 interface Sermon {
   title: string;
@@ -13,13 +14,19 @@ interface Sermon {
 }
 
 export default function SermonsPage() {
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  // const [selectedCategory, setSelectedCategory] = useState<string>("all");
   
   useEffect(() => {
     // Set initial styles directly to avoid flash of invisible content
+
     gsap.set([".page-header", ".filter-buttons", ".sermon-card"], { 
-      opacity: 1,
-      y: 0
+      opacity: 0,
+      y: function(index, element) {
+        if (element.classList.contains("page-header")) return -50;
+        if (element.classList.contains("filter-buttons")) return 30;
+        if (element.classList.contains("sermon-card")) return 50;
+        return 0;
+      }
     });
 
     const tl = gsap.timeline({ 
@@ -51,7 +58,7 @@ export default function SermonsPage() {
     };
   }, []);
 
-  const sermons: Sermon[] = [
+  const filteredSermons: Sermon[] = [
     {
       title: "El Amor de Dios (The Love of God)",
       preacher: "Pastor Roberto Martinez",
@@ -103,12 +110,12 @@ export default function SermonsPage() {
   ];
   
   // Filter sermons based on the selected category
-  const filteredSermons = selectedCategory === "all" 
-    ? sermons 
-    : sermons.filter(sermon => sermon.category === selectedCategory);
+  // const filteredSermons = selectedCategory === "all" 
+  //   ? sermons 
+  //   : sermons.filter(sermon => sermon.category === selectedCategory);
     
   // Get unique categories for filter buttons
-  const categories = ["all", ...new Set(sermons.map(sermon => sermon.category))];
+  // const categories = ["all", ...new Set(sermons.map(sermon => sermon.category))];
 
   return (
     <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8">
@@ -123,7 +130,7 @@ export default function SermonsPage() {
           </p>
         </div>
 
-        {/* Category Filter */}
+        {/* Category Filter
         <div className="flex flex-wrap justify-center mb-12 filter-buttons">
           {categories.map((category, index) => (
             <button 
@@ -138,7 +145,7 @@ export default function SermonsPage() {
               {category === "all" ? "All Sermons" : category}
             </button>
           ))}
-        </div>
+        </div> */}
 
         {/* Sermon Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
@@ -154,10 +161,12 @@ export default function SermonsPage() {
                   rel="noopener noreferrer"
                   className="absolute inset-0 flex items-center justify-center"
                 >
-                  <img 
+                  <Image 
                     src={`https://img.youtube.com/vi/${sermon.youtubeId}/maxresdefault.jpg`} 
                     alt={sermon.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    fill
+                    style={{ objectFit: "cover" }}
+                    className="group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors"></div>
                   <div className="absolute flex items-center justify-center w-16 h-16 rounded-full bg-primary-brown/90 group-hover:bg-primary-brown transition-colors">

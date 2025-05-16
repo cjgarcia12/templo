@@ -3,11 +3,13 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const { language, setLanguage, t } = useLanguage();
 
   // Handle scroll effect
   useEffect(() => {
@@ -19,12 +21,16 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const toggleLanguage = () => {
+    setLanguage(language === 'en' ? 'es' : 'en');
+  };
+
   const navLinks = [
-    { name: "Home", href: "/" },
-    { name: "Services", href: "/services" },
-    { name: "Ministries", href: "/ministries" },
-    { name: "Events", href: "/events" },
-    { name: "Sermons", href: "/sermons" }
+    { name: t('home'), href: "/" },
+    { name: t('services'), href: "/services" },
+    { name: t('ministries'), href: "/ministries" },
+    { name: t('events'), href: "/events" },
+    { name: t('sermons'), href: "/sermons" }
   ];
 
   return (
@@ -62,26 +68,51 @@ export default function Navbar() {
                   {link.name}
                 </Link>
               ))}
+              
+              {/* Language Toggle Button */}
+              <button
+                onClick={toggleLanguage}
+                className="flex items-center justify-center px-3 py-1.5 text-sm font-medium rounded-full bg-primary-gold text-text-light hover:bg-primary-gold/90 transition-colors"
+                aria-label="Toggle language"
+              >
+                <span className="font-medium">
+                  {language === 'en' ? 'Español' : 'English'}
+                </span>
+              </button>
             </div>
           </div>
 
           {/* Mobile menu button */}
-          <button
-            type="button"
-            className="md:hidden text-text-dark"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            {isMenuOpen ? (
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            )}
-          </button>
+          <div className="flex items-center space-x-3 md:hidden">
+            {/* Language Toggle Button (Mobile) */}
+            <button
+              onClick={toggleLanguage}
+              className="flex items-center justify-center px-2 py-1 text-xs font-medium rounded-full bg-primary-gold text-text-light hover:bg-primary-gold/90 transition-colors"
+              aria-label="Toggle language"
+            >
+              <span className="font-medium">
+                {language === 'en' ? 'ES' : 'EN'}
+              </span>
+            </button>
+            
+            {/* Mobile Menu Toggle */}
+            <button
+              type="button"
+              className="text-text-dark"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              {isMenuOpen ? (
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              )}
+            </button>
+          </div>
         </div>
       </div>
 
