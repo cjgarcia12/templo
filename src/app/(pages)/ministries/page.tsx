@@ -1,8 +1,9 @@
-import Link from "next/link";
 import React from "react";
 import { generateSEO } from "@/lib/seo";
 import StructuredData from "@/components/seo/StructuredData";
 import MinistriesClient from "./MinistriesClient";
+import MinistriesTranslatedContent from "./MinistriesTranslatedContent";
+import Link from "next/link";
 
 // SEO metadata - this runs on the server
 export const metadata = generateSEO({
@@ -94,15 +95,8 @@ export default function MinistriesPage() {
       
       <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
-          {/* Header Section - Server rendered for SEO */}
-          <header className="text-center mb-16 page-header">
-            <h1 className="text-4xl md:text-5xl font-bold text-primary-brown mb-4">
-              Our Ministries
-            </h1>
-            <p className="text-lg text-text-dark/80 max-w-2xl mx-auto">
-              Discover the various ways you can get involved and serve in our church community. Every ministry is an opportunity to grow in faith and make a difference.
-            </p>
-          </header>
+          {/* Translated Content Component */}
+          <MinistriesTranslatedContent />
 
           {/* Ministries Grid - Server rendered for SEO */}
           <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">

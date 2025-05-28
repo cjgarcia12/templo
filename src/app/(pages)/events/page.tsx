@@ -1,8 +1,8 @@
-import Link from "next/link";
 import { generateSEO } from "@/lib/seo";
 import StructuredData from "@/components/seo/StructuredData";
 import EventsClient from "./EventsClient";
 import EventsFilter from "./EventsFilter";
+import EventsTranslatedContent from "./EventsTranslatedContent";
 
 // SEO metadata - this runs on the server
 export const metadata = generateSEO({
@@ -92,34 +92,11 @@ export default function EventsPage() {
       
       <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
-          {/* Header Section - Server rendered for SEO */}
-          <header className="text-center mb-12 page-header">
-            <h1 className="text-4xl md:text-5xl font-bold text-primary-brown mb-4">
-              Upcoming Events
-            </h1>
-            <p className="text-lg text-text-dark/80 max-w-2xl mx-auto">
-              Stay connected and get involved with these upcoming events and activities at our church.
-            </p>
-          </header>
+          {/* Translated Content Component */}
+          <EventsTranslatedContent />
 
           {/* Interactive Filter Component */}
           <EventsFilter events={eventsData} />
-
-          {/* Calendar Subscription - Server rendered for SEO */}
-          <section className="bg-accent-cream/20 rounded-xl p-8 md:p-12 text-center" id="calendar">
-            <h2 className="text-3xl font-bold text-primary-brown mb-4">
-              Never Miss an Event
-            </h2>
-            <p className="text-lg text-text-dark/80 max-w-2xl mx-auto mb-8">
-              Subscribe to our church calendar to stay up-to-date with all our events and activities.
-            </p>
-            <Link
-              href="#subscribe"
-              className="inline-block bg-primary-brown hover:bg-primary-brown/90 text-white font-medium py-3 px-6 rounded-md transition-colors"
-            >
-              Subscribe to Calendar
-            </Link>
-          </section>
         </div>
       </div>
 

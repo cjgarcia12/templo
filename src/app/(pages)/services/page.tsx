@@ -2,6 +2,7 @@ import React from "react";
 import { generateSEO } from "@/lib/seo";
 import StructuredData from "@/components/seo/StructuredData";
 import ServicesClient from "./ServicesClient";
+import ServicesTranslatedContent from "./ServicesTranslatedContent";
 
 // SEO metadata - this runs on the server
 export const metadata = generateSEO({
@@ -67,15 +68,8 @@ export default function ServicesPage() {
       
       <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
-          {/* Header Section - Server rendered for SEO */}
-          <header className="text-center mb-16 page-header">
-            <h1 className="text-4xl md:text-5xl font-bold text-primary-brown mb-4">
-              Our Services
-            </h1>
-            <p className="text-lg text-text-dark/80 max-w-2xl mx-auto">
-              Join us for worship, prayer, and fellowship. Everyone is welcome to experience God&apos;s love and grow in faith together.
-            </p>
-          </header>
+          {/* Translated Content Component */}
+          <ServicesTranslatedContent />
 
           {/* Services Section - Server rendered for SEO */}
           <section className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">

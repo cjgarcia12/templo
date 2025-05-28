@@ -19,6 +19,6 @@ jobs:
     - name: Build App
       run: npm run build
 
-    - name: Restart pm2 Server PRocess
+    - name: Restart pm2 Server Process
       run: pm2 restart temploaa --silent
       shell: bash

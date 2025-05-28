@@ -2,6 +2,7 @@ import Image from "next/image";
 import { generateSEO } from "@/lib/seo";
 import StructuredData from "@/components/seo/StructuredData";
 import SermonsClient from "./SermonsClient";
+import SermonsTranslatedContent from "./SermonsTranslatedContent";
 
 // SEO metadata - this runs on the server
 export const metadata = generateSEO({
@@ -83,15 +84,8 @@ export default function SermonsPage() {
       
       <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
-          {/* Header Section - Server rendered for SEO */}
-          <header className="text-center mb-12 page-header">
-            <h1 className="text-4xl md:text-5xl font-bold text-primary-brown mb-4">
-              Sermon Archive
-            </h1>
-            <p className="text-lg text-text-dark/80 max-w-2xl mx-auto">
-              Watch and listen to inspiring messages from our church. Biblical teachings that encourage, challenge, and strengthen your faith.
-            </p>
-          </header>
+          {/* Translated Content Component */}
+          <SermonsTranslatedContent />
 
           {/* Sermon Grid - Server rendered for SEO */}
           <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
