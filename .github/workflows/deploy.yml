@@ -6,7 +6,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: myvps
+    runs-on: ubuntu-latest
 
     steps:
     - name: SSH and deploy
