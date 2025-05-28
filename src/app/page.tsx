@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useLanguage } from "@/context/LanguageContext";
 
 // Register the ScrollTrigger plugin
 if (typeof window !== 'undefined') {
@@ -11,6 +12,7 @@ if (typeof window !== 'undefined') {
 }
 
 export default function Home() {
+  const { t } = useLanguage();
   const heroRef = useRef(null);
   const aboutRef = useRef(null);
   const servicesRef = useRef(null);
@@ -156,13 +158,13 @@ export default function Home() {
                 href="/services"
                 className="inline-block bg-primary-brown hover:bg-primary-brown/90 text-white font-medium py-3 px-6 rounded-md transition-colors"
               >
-                Our Services
+                {t('our_services')}
               </Link>
               <Link
                 href="/sermons"
                 className="inline-block bg-transparent border-2 border-primary-gold hover:bg-primary-gold/10 text-primary-gold font-medium py-3 px-6 rounded-md transition-colors"
               >
-                Watch Sermons
+                {t('watch_more_sermons')}
               </Link>
             </div>
           </div>
@@ -178,24 +180,22 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="about-content">
               <h2 className="text-3xl md:text-4xl font-bold text-primary-brown mb-6">
-                Welcome to Our Church
+                {t('welcome_to_church')}
               </h2>
               
               <p className="text-text-dark/80 mb-6">
-                Templo Adoracion Y Alabanza is a vibrant, Spirit-filled church serving the Wilmington community. 
-                We are dedicated to sharing God&apos;s love through worship, discipleship, and community service.
+                {t('church_description')}
               </p>
               
               <p className="text-text-dark/80 mb-6">
-                Our mission is to create an inclusive environment where people from all walks of life 
-                can encounter God, build meaningful relationships, and grow in their faith journey.
+                {t('mission_description')}
               </p>
               
               <Link
                 href="/ministries"
                 className="inline-block font-medium text-primary-gold hover:text-primary-brown transition-colors"
               >
-                Discover Our Ministries →
+                {t('discover_ministries')} →
               </Link>
             </div>
             
@@ -218,10 +218,10 @@ export default function Home() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-primary-brown mb-4">
-              Join Us For Worship
+              {t('join_for_worship')}
             </h2>
             <p className="text-text-dark/80 max-w-2xl mx-auto">
-              We invite you to join us for our regular services and experience the presence of God in a welcoming community.
+              {t('worship_invite')}
             </p>
           </div>
           
@@ -232,7 +232,7 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-primary-brown mb-2">Sunday Worship</h3>
+              <h3 className="text-xl font-bold text-primary-brown mb-2">{t('sunday_worship_home')}</h3>
               <p className="text-text-dark/80 mb-1">Every Sunday</p>
               <p className="text-primary-gold font-medium">11:00 AM</p>
             </div>
@@ -243,7 +243,7 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-primary-brown mb-2">Prayer Night</h3>
+              <h3 className="text-xl font-bold text-primary-brown mb-2">{t('prayer_night_home')}</h3>
               <p className="text-text-dark/80 mb-1">Every Tuesday</p>
               <p className="text-primary-gold font-medium">7:00 PM</p>
             </div>
@@ -254,7 +254,7 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-primary-brown mb-2">Bible Study/Youth Night</h3>
+              <h3 className="text-xl font-bold text-primary-brown mb-2">{t('bible_study_youth_night')}</h3>
               <p className="text-text-dark/80 mb-1">Every Friday</p>
               <p className="text-primary-gold font-medium">7:00 PM</p>
             </div>
@@ -265,7 +265,7 @@ export default function Home() {
               href="/services"
               className="inline-block bg-primary-brown hover:bg-primary-brown/90 text-white font-medium py-3 px-6 rounded-md transition-colors"
             >
-              Learn More About Our Services
+              {t('learn_more_services')}
             </Link>
           </div>
         </div>
@@ -279,10 +279,10 @@ export default function Home() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 sermon-section">
             <h2 className="text-3xl md:text-4xl font-bold text-primary-brown mb-4">
-              Latest Sermon
+              {t('latest_sermon')}
             </h2>
             <p className="text-text-dark/80 max-w-2xl mx-auto">
-              Watch our most recent message and be encouraged in your faith journey.
+              {t('watch_sermon')}
             </p>
           </div>
           
@@ -305,14 +305,14 @@ export default function Home() {
                 Pastor Roberto Martinez | May 7, 2023
               </p>
               <p className="text-text-dark/80 mb-6">
-                In this powerful message, Pastor Roberto explores the depth and dimensions of God&apos;s love for us and how it transforms our lives. Learn how God&apos;s love can heal wounds, restore relationships, and give you the courage to face any challenge.
+                {t('sermon_description')}
               </p>
               <div className="space-y-4">
                 <Link
                   href="/sermons"
                   className="inline-flex items-center text-primary-gold hover:text-primary-brown transition-colors"
                 >
-                  <span className="mr-2">Watch more sermons</span>
+                  <span className="mr-2">{t('watch_more_sermons')}</span>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-4 h-4">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
@@ -328,24 +328,23 @@ export default function Home() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-accent-cream/30 rounded-xl p-8 md:p-12 text-center">
             <h2 className="text-3xl md:text-4xl font-bold text-primary-brown mb-6">
-              Join Us This Sunday
+              {t('join_sunday')}
             </h2>
                           <p className="text-lg text-text-dark/80 max-w-2xl mx-auto mb-8">
-                We&apos;d love to welcome you to our church family. Experience heartfelt worship, 
-                relevant teaching, and warm community.
+                {t('welcome_community')}
               </p>
             <div className="space-x-4">
               <Link
                 href="/services"
                 className="inline-block bg-primary-brown hover:bg-primary-brown/90 text-white font-medium py-3 px-6 rounded-md transition-colors"
               >
-                Plan Your Visit
+                {t('plan_visit')}
               </Link>
               <Link
                 href="#contact"
                 className="inline-block bg-transparent border-2 border-primary-gold hover:bg-primary-gold/10 text-primary-gold font-medium py-3 px-6 rounded-md transition-colors"
               >
-                Contact Us
+                {t('contact_us')}
               </Link>
             </div>
           </div>

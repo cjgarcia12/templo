@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import gsap from "gsap";
 import Image from "next/image";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface Sermon {
   title: string;
@@ -15,6 +16,7 @@ interface Sermon {
 
 export default function SermonsPage() {
   // const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const { t } = useLanguage();
   
   useEffect(() => {
     // Set initial styles directly to avoid flash of invisible content
@@ -123,10 +125,10 @@ export default function SermonsPage() {
         {/* Header Section */}
         <div className="text-center mb-12 page-header">
           <h1 className="text-4xl md:text-5xl font-bold text-primary-brown mb-4">
-            Sermon Archive
+            {t('sermon_archive')}
           </h1>
           <p className="text-lg text-text-dark/80 max-w-2xl mx-auto">
-            Watch and listen to recent messages from our church services and special events.
+            {t('sermons_description')}
           </p>
         </div>
 
@@ -213,7 +215,7 @@ export default function SermonsPage() {
                     rel="noopener noreferrer"
                     className="text-sm font-medium text-primary-gold hover:text-primary-brown transition-colors flex items-center"
                   >
-                    Watch Now
+                    {t('watch_now')}
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-4 h-4 ml-1">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                     </svg>
@@ -226,7 +228,7 @@ export default function SermonsPage() {
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-4 h-4 mr-1">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                     </svg>
-                    Audio
+                    {t('download_audio')}
                   </button>
                 </div>
               </div>
@@ -237,10 +239,10 @@ export default function SermonsPage() {
         {/* Subscription Call-to-Action */}
         <div className="bg-accent-cream/20 rounded-xl p-8 md:p-12 text-center">
           <h2 className="text-3xl font-bold text-primary-brown mb-4">
-            Don&apos;t Miss Any Sermons
+            {t('dont_miss_sermons')}
           </h2>
           <p className="text-lg text-text-dark/80 max-w-2xl mx-auto mb-8">
-            Subscribe to our YouTube channel to get notified when new sermons are available.
+            {t('sermons_description')}
           </p>
           <a 
             href="https://www.youtube.com" 
@@ -251,7 +253,7 @@ export default function SermonsPage() {
             <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
             </svg>
-            Subscribe to Our Channel
+            {t('youtube_subscribe')}
           </a>
         </div>
       </div>

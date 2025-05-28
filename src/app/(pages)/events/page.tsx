@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import gsap from "gsap";
 import Link from "next/link";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface Event {
   title: string;
@@ -15,6 +16,7 @@ interface Event {
 
 export default function EventsPage() {
   const [filter, setFilter] = useState<string>("all");
+  const { t } = useLanguage();
   
   useEffect(() => {
     // First immediately set everything to invisible
@@ -125,10 +127,10 @@ export default function EventsPage() {
         {/* Header Section */}
         <div className="text-center mb-12 page-header">
           <h1 className="text-4xl md:text-5xl font-bold text-primary-brown mb-4">
-            Upcoming Events
+            {t('upcoming_events')}
           </h1>
           <p className="text-lg text-text-dark/80 max-w-2xl mx-auto">
-            Stay connected and get involved with these upcoming events and activities at our church.
+            {t('events_description')}
           </p>
         </div>
 
@@ -142,7 +144,7 @@ export default function EventsPage() {
                 : "bg-primary-brown/10 text-primary-brown hover:bg-primary-brown/20"
             }`}
           >
-            All Events
+            {t('all_events')}
           </button>
           <button 
             onClick={() => setFilter("worship")}
@@ -152,7 +154,7 @@ export default function EventsPage() {
                 : "bg-primary-brown/10 text-primary-brown hover:bg-primary-brown/20"
             }`}
           >
-            Worship
+            {t('worship_category')}
           </button>
           <button 
             onClick={() => setFilter("community")}
@@ -162,7 +164,7 @@ export default function EventsPage() {
                 : "bg-primary-brown/10 text-primary-brown hover:bg-primary-brown/20"
             }`}
           >
-            Community
+            {t('community_category')}
           </button>
           <button 
             onClick={() => setFilter("youth")}
@@ -172,7 +174,7 @@ export default function EventsPage() {
                 : "bg-primary-brown/10 text-primary-brown hover:bg-primary-brown/20"
             }`}
           >
-            Youth
+            {t('youth_category')}
           </button>
           <button 
             onClick={() => setFilter("special")}
@@ -182,7 +184,7 @@ export default function EventsPage() {
                 : "bg-primary-brown/10 text-primary-brown hover:bg-primary-brown/20"
             }`}
           >
-            Special Events
+            {t('special_events')}
           </button>
         </div>
 
@@ -250,16 +252,16 @@ export default function EventsPage() {
         {/* Calendar Subscription */}
         <div className="bg-accent-cream/20 rounded-xl p-8 md:p-12 text-center" id="calendar">
           <h2 className="text-3xl font-bold text-primary-brown mb-4">
-            Never Miss an Event
+            {t('never_miss_event')}
           </h2>
           <p className="text-lg text-text-dark/80 max-w-2xl mx-auto mb-8">
-            Subscribe to our church calendar to stay up-to-date with all our events and activities.
+            {t('calendar_description')}
           </p>
           <Link
             href="#subscribe"
             className="inline-block bg-primary-brown hover:bg-primary-brown/90 text-white font-medium py-3 px-6 rounded-md transition-colors"
           >
-            Subscribe to Calendar
+            {t('subscribe_calendar')}
           </Link>
         </div>
       </div>

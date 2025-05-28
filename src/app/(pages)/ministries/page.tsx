@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import gsap from "gsap";
 import Link from "next/link";
 import React from "react";
+import { useLanguage } from "@/context/LanguageContext";
+
 interface Ministry {
   title: string;
   description: string;
@@ -12,6 +14,8 @@ interface Ministry {
 }
 
 export default function MinistriesPage() {
+  const { t } = useLanguage();
+  
   useEffect(() => {
     // Set initial styles directly to avoid flash of invisible content
     gsap.set([".page-header", ".ministry-card"], { 
@@ -44,8 +48,8 @@ export default function MinistriesPage() {
 
   const ministries: Ministry[] = [
     {
-      title: "Worship Team",
-      description: "Our worship team leads the congregation in praise and worship during our services, creating an atmosphere where people can encounter God's presence.",
+      title: t('worship_team'),
+      description: t('worship_team_desc'),
       leader: "Worship Leader: María Hernández",
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-12 h-12">
@@ -54,8 +58,8 @@ export default function MinistriesPage() {
       )
     },
     {
-      title: "Prayer Ministry",
-      description: "Our prayer team is dedicated to interceding for the needs of the church, community, and world. We believe in the power of prayer to bring transformation.",
+      title: t('prayer_ministry'),
+      description: t('prayer_ministry_desc'),
       leader: "Prayer Coordinator: Juan Mendez",
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-12 h-12">
@@ -64,8 +68,8 @@ export default function MinistriesPage() {
       )
     },
     {
-      title: "Youth Ministry",
-      description: "Our youth ministry provides a safe and fun environment for young people to grow in their faith, build lasting friendships, and discover their purpose in God.",
+      title: t('youth_ministry'),
+      description: t('youth_ministry_desc'),
       leader: "Youth Pastor: Carlos Rodriguez",
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-12 h-12">
@@ -74,8 +78,8 @@ export default function MinistriesPage() {
       )
     },
     {
-      title: "Children's Ministry",
-      description: "Our children's ministry provides age-appropriate biblical teaching and fun activities to help children develop a strong foundation in faith from an early age.",
+      title: t('children_ministry'),
+      description: t('children_ministry_desc'),
       leader: "Children's Director: Luisa Martinez",
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-12 h-12">
@@ -84,8 +88,8 @@ export default function MinistriesPage() {
       )
     },
     {
-      title: "Outreach & Missions",
-      description: "Our outreach team serves the local community through various initiatives and supports missionary work, sharing God's love through practical acts of service.",
+      title: t('outreach_missions'),
+      description: t('outreach_missions_desc'),
       leader: "Outreach Coordinator: Ana Gomez",
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-12 h-12">
@@ -94,8 +98,8 @@ export default function MinistriesPage() {
       )
     },
     {
-      title: "Hospitality Team",
-      description: "Our hospitality team creates a warm, welcoming environment for everyone who enters our doors, ensuring that visitors feel at home in our church family.",
+      title: t('hospitality_team'),
+      description: t('hospitality_team_desc'),
       leader: "Hospitality Coordinator: Roberto Diaz",
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-12 h-12">
@@ -111,10 +115,10 @@ export default function MinistriesPage() {
         {/* Header Section */}
         <div className="text-center mb-16 page-header">
           <h1 className="text-4xl md:text-5xl font-bold text-primary-brown mb-4">
-            Our Ministries
+            {t('our_ministries')}
           </h1>
           <p className="text-lg text-text-dark/80 max-w-2xl mx-auto">
-            Discover ways to get involved, serve, and grow in your faith journey with our various ministry opportunities.
+            {t('ministries_description')}
           </p>
         </div>
 
@@ -153,16 +157,16 @@ export default function MinistriesPage() {
         {/* Get Involved Section */}
         <div className="bg-accent-cream/20 rounded-xl p-8 md:p-12 text-center">
           <h2 className="text-3xl font-bold text-primary-brown mb-4">
-            Want to Get Involved?
+            {t('get_involved')}
           </h2>
           <p className="text-lg text-text-dark/80 max-w-2xl mx-auto mb-8">
-            We believe everyone has unique gifts and talents that can contribute to the church body. We&apos;d love to help you find your place to serve!
+            {t('get_involved_desc')}
           </p>
           <Link
             href="#contact"
             className="inline-block bg-primary-brown hover:bg-primary-brown/90 text-white font-medium py-3 px-6 rounded-md transition-colors"
           >
-            Contact Us to Learn More
+            {t('contact_learn_more')}
           </Link>
         </div>
       </div>
