@@ -1,5 +1,6 @@
 {
-  "name": "templo",
+  "name": "temploaa",
+  "description": "Local church website for Templo AA",
   "version": "0.1.0",
   "private": true,
   "scripts": {
