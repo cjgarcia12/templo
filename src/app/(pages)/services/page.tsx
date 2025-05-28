@@ -2,7 +2,7 @@ import React from "react";
 import { generateSEO } from "@/lib/seo";
 import StructuredData from "@/components/seo/StructuredData";
 import ServicesClient from "./ServicesClient";
-import ServicesTranslatedContent from "./ServicesTranslatedContent";
+import ServicesPageContent from "./ServicesPageContent";
 
 // SEO metadata - this runs on the server
 export const metadata = generateSEO({
@@ -66,92 +66,8 @@ export default function ServicesPage() {
         data={{}} 
       />
       
-      <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          {/* Translated Content Component */}
-          <ServicesTranslatedContent />
-
-          {/* Services Section - Server rendered for SEO */}
-          <section className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            {servicesData.map((service, index) => (
-              <article 
-                key={index}
-                className="service-card bg-white rounded-xl shadow-lg p-8 transition-all duration-300 hover:shadow-xl hover:-translate-y-2"
-                itemScope 
-                itemType="https://schema.org/Event"
-              >
-                <div className="text-primary-gold mb-6" aria-hidden="true">
-                  {service.icon}
-                </div>
-                <h3 className="text-xl font-bold text-primary-brown mb-2" itemProp="name">
-                  {service.title}
-                </h3>
-                <div className="flex items-center mb-4">
-                  <time className="text-sm font-semibold bg-primary-brown/10 text-primary-brown rounded-full px-3 py-1" itemProp="startTime">
-                    {service.day}s at {service.time}
-                  </time>
-                </div>
-                <p className="text-text-dark/80 mb-4" itemProp="description">
-                  {service.description}
-                </p>
-              </article>
-            ))}
-          </section>
-
-          {/* What to Expect Section - Server rendered for SEO */}
-          <section className="bg-accent-cream/20 rounded-xl p-8 md:p-12 mb-16">
-            <h2 className="text-3xl font-bold text-primary-brown mb-6">
-              What to Expect
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div>
-                <h3 className="text-xl font-bold text-primary-gold mb-3">
-                  Warm Welcome
-                </h3>
-                <p className="text-text-dark/80 mb-6">
-                  From the moment you arrive, you&apos;ll be greeted with genuine smiles and open hearts. Our hospitality team is here to help you feel at home and answer any questions you might have.
-                </p>
-                
-                <h3 className="text-xl font-bold text-primary-gold mb-3">
-                  Vibrant Worship
-                </h3>
-                <p className="text-text-dark/80">
-                  Experience heartfelt worship through contemporary and traditional music that lifts your spirit and draws you closer to God. Our worship team leads with passion and authenticity.
-                </p>
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-primary-gold mb-3">
-                  Relevant Teaching
-                </h3>
-                <p className="text-text-dark/80 mb-6">
-                  Our messages are grounded in biblical truth and applied to everyday life. You&apos;ll leave with practical insights and encouragement for your spiritual journey.
-                </p>
-                
-                <h3 className="text-xl font-bold text-primary-gold mb-3">
-                  Community Connection
-                </h3>
-                <p className="text-text-dark/80">
-                  Connect with others who share your faith and values. Our church family is diverse, welcoming, and committed to supporting one another through life&apos;s journey.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          {/* Location Section - Server rendered for SEO */}
-          <section className="text-center" itemScope itemType="https://schema.org/Place">
-            <h2 className="text-3xl font-bold text-primary-brown mb-6">
-              Join Us At
-            </h2>
-            <address className="not-italic text-lg text-text-dark/80 mb-4" itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
-              <span itemProp="streetAddress">209 S 7th Street</span><br />
-              <span itemProp="addressLocality">Wilmington</span>, <span itemProp="addressRegion">NC</span>
-            </address>
-            <p className="text-primary-gold font-medium">
-              We can&apos;t wait to welcome you into our church family!
-            </p>
-          </section>
-        </div>
-      </div>
+      {/* Client component handles all translated content */}
+      <ServicesPageContent services={servicesData} />
 
       {/* Client component for animations */}
       <ServicesClient />

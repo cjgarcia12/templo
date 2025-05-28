@@ -2,8 +2,7 @@ import React from "react";
 import { generateSEO } from "@/lib/seo";
 import StructuredData from "@/components/seo/StructuredData";
 import MinistriesClient from "./MinistriesClient";
-import MinistriesTranslatedContent from "./MinistriesTranslatedContent";
-import Link from "next/link";
+import MinistriesPageContent from "./MinistriesPageContent";
 
 // SEO metadata - this runs on the server
 export const metadata = generateSEO({
@@ -93,62 +92,8 @@ export default function MinistriesPage() {
         data={{}} 
       />
       
-      <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          {/* Translated Content Component */}
-          <MinistriesTranslatedContent />
-
-          {/* Ministries Grid - Server rendered for SEO */}
-          <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            {ministriesData.map((ministry, index) => (
-              <article
-                key={index}
-                className="ministry-card bg-white rounded-xl shadow-lg overflow-hidden group"
-                itemScope 
-                itemType="https://schema.org/Organization"
-              >
-                <div className="p-6 md:p-8 flex flex-col h-full">
-                  <div className="flex items-center justify-between mb-5">
-                    <div className="text-primary-gold group-hover:scale-110 transition-transform duration-300" aria-hidden="true">
-                      {ministry.icon}
-                    </div>
-                    <div className="h-12 w-12 rounded-full bg-primary-brown/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6 text-primary-brown" aria-hidden="true">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                      </svg>
-                    </div>
-                  </div>
-                  <h3 className="text-xl font-bold text-primary-brown mb-2 group-hover:text-primary-gold transition-colors duration-300" itemProp="name">
-                    {ministry.title}
-                  </h3>
-                  <p className="text-text-dark/80 mb-6 flex-grow" itemProp="description">
-                    {ministry.description}
-                  </p>
-                  <div className="text-sm font-medium text-primary-gold border-t border-primary-gold/20 pt-4">
-                    {ministry.leader}
-                  </div>
-                </div>
-              </article>
-            ))}
-          </section>
-
-          {/* Get Involved Section - Server rendered for SEO */}
-          <section className="bg-accent-cream/20 rounded-xl p-8 md:p-12 text-center cta-section">
-            <h2 className="text-3xl font-bold text-primary-brown mb-4">
-              Get Involved
-            </h2>
-            <p className="text-lg text-text-dark/80 max-w-2xl mx-auto mb-8">
-              Ready to make a difference? Join one of our ministries and discover how God can use your unique gifts and talents to serve others and grow in your faith.
-            </p>
-            <Link
-              href="#contact"
-              className="inline-block bg-primary-brown hover:bg-primary-brown/90 text-white font-medium py-3 px-6 rounded-md transition-colors"
-            >
-              Contact Us to Learn More
-            </Link>
-          </section>
-        </div>
-      </div>
+      {/* Client component handles all translated content */}
+      <MinistriesPageContent ministries={ministriesData} />
 
       {/* Client component for animations */}
       <MinistriesClient />

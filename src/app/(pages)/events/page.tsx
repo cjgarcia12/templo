@@ -1,8 +1,7 @@
 import { generateSEO } from "@/lib/seo";
 import StructuredData from "@/components/seo/StructuredData";
 import EventsClient from "./EventsClient";
-import EventsFilter from "./EventsFilter";
-import EventsTranslatedContent from "./EventsTranslatedContent";
+import EventsPageContent from "./EventsPageContent";
 
 // SEO metadata - this runs on the server
 export const metadata = generateSEO({
@@ -90,15 +89,8 @@ export default function EventsPage() {
         data={{}} 
       />
       
-      <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          {/* Translated Content Component */}
-          <EventsTranslatedContent />
-
-          {/* Interactive Filter Component */}
-          <EventsFilter events={eventsData} />
-        </div>
-      </div>
+      {/* Client component handles all translated content */}
+      <EventsPageContent events={eventsData} />
 
       {/* Client component for animations */}
       <EventsClient />
