@@ -5,6 +5,7 @@ import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLanguage } from "@/context/LanguageContext";
+import FeaturedVideo from "@/components/FeaturedVideo";
 
 // Register the ScrollTrigger plugin
 if (typeof window !== 'undefined') {
@@ -286,40 +287,7 @@ export default function Home() {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center sermon-section">
-            <div className="aspect-video bg-black rounded-xl overflow-hidden shadow-xl">
-              <iframe
-                className="w-full h-full"
-                src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
-                title="Latest Sermon"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowFullScreen
-              ></iframe>
-            </div>
-            
-            <div>
-              <h3 className="text-2xl font-bold text-primary-brown mb-2">
-                El Amor de Dios (The Love of God)
-              </h3>
-              <p className="text-primary-gold mb-4">
-                Pastor Roberto Martinez | May 7, 2023
-              </p>
-              <p className="text-text-dark/80 mb-6">
-                {t('sermon_description')}
-              </p>
-              <div className="space-y-4">
-                <Link
-                  href="/sermons"
-                  className="inline-flex items-center text-primary-gold hover:text-primary-brown transition-colors"
-                >
-                  <span className="mr-2">{t('watch_more_sermons')}</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-4 h-4">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </Link>
-              </div>
-            </div>
-          </div>
+          <FeaturedVideo />
         </div>
       </section>
 
