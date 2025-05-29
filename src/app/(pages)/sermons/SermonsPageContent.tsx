@@ -2,18 +2,10 @@
 
 import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
-
-interface Sermon {
-  title: string;
-  preacher: string;
-  date: string;
-  description: string;
-  youtubeId: string;
-  category: string;
-}
+import { SermonData } from "@/lib/youtube";
 
 interface SermonsPageContentProps {
-  sermons: Sermon[];
+  sermons: SermonData[];
 }
 
 export default function SermonsPageContent({ sermons }: SermonsPageContentProps) {
@@ -71,9 +63,14 @@ export default function SermonsPageContent({ sermons }: SermonsPageContentProps)
                   <span className="text-xs font-medium bg-primary-gold/10 text-primary-gold rounded-full px-2 py-1">
                     {sermon.category}
                   </span>
-                  <time className="text-xs text-text-dark/60 ml-2" dateTime={sermon.date}>
+                  <time className="text-xs text-text-dark/60 ml-2" dateTime={sermon.publishedAt}>
                     {sermon.date}
                   </time>
+                  {sermon.duration && (
+                    <span className="text-xs text-text-dark/60 ml-2">
+                      {sermon.duration}
+                    </span>
+                  )}
                 </div>
                 
                 <h3 className="text-lg font-bold text-primary-brown group-hover:text-primary-gold transition-colors" itemProp="name">
@@ -108,15 +105,27 @@ export default function SermonsPageContent({ sermons }: SermonsPageContentProps)
                     </svg>
                   </a>
                   
-                  <button 
-                    className="text-sm font-medium text-text-dark/60 hover:text-primary-brown transition-colors flex items-center"
-                    aria-label="Download sermon audio"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-4 h-4 mr-1" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                    </svg>
-                    {t('download_audio')}
-                  </button>
+                  {(sermon.viewCount !== '0' || sermon.likeCount !== '0') && (
+                    <div className="flex items-center space-x-2 text-xs text-text-dark/60">
+                      {sermon.viewCount !== '0' && (
+                        <span className="flex items-center">
+                          <svg className="w-3 h-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                          </svg>
+                          {parseInt(sermon.viewCount).toLocaleString()}
+                        </span>
+                      )}
+                      {sermon.likeCount !== '0' && (
+                        <span className="flex items-center">
+                          <svg className="w-3 h-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                          </svg>
+                          {parseInt(sermon.likeCount).toLocaleString()}
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             </article>
