@@ -3,12 +3,13 @@
 import { useState } from 'react';
 import { useLanguage } from "@/context/LanguageContext";
 
+// Event interface matching the database model
 interface Event {
   title: string;
   date: string;
   time: string;
   location: string;
-  description: string;
+  description?: string;
   category: "Worship" | "Community" | "Youth" | "Special";
 }
 
@@ -132,7 +133,7 @@ export default function EventsFilter({ events }: EventsFilterProps) {
                     </span>
                   </div>
                   <p className="text-text-dark/80 mb-4" itemProp="description">
-                    {event.description}
+                    {event.description || 'More details to be announced. Contact us for information.'}
                   </p>
                   {!event.date.includes("Every") && (
                     <a 

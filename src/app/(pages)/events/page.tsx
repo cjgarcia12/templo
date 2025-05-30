@@ -3,6 +3,16 @@ import StructuredData from "@/components/seo/StructuredData";
 import EventsClient from "./EventsClient";
 import EventsPageContent from "./EventsPageContent";
 
+// Event interface matching our database model
+interface Event {
+  title: string;
+  date: string;
+  time: string;
+  location: string;
+  description?: string;
+  category: "Worship" | "Community" | "Youth" | "Special";
+}
+
 // SEO metadata - this runs on the server
 export const metadata = generateSEO({
   title: 'Upcoming Events',
@@ -11,17 +21,8 @@ export const metadata = generateSEO({
   path: '/events',
 });
 
-interface Event {
-  title: string;
-  date: string;
-  time: string;
-  location: string;
-  description: string;
-  category: "Worship" | "Community" | "Youth" | "Special";
-}
-
-// Static events data for SEO
-const eventsData: Event[] = [
+// Static fallback events data for SEO (used when API is not available)
+const fallbackEventsData: Event[] = [
   {
     title: "Sunday Worship Service",
     date: "Every Sunday",
@@ -39,48 +40,62 @@ const eventsData: Event[] = [
     category: "Worship"
   },
   {
-    title: "Friday Bible Study & Youth Night",
+    title: "Friday Bible Study",
     date: "Every Friday",
     time: "7:00 PM",
-    location: "Fellowship Hall & Youth Room",
-    description: "Adults gather for Bible study while youth enjoy a dedicated program focused on spiritual growth.",
-    category: "Youth"
-  },
-  {
-    title: "Community Outreach: Food Distribution",
-    date: "May 28, 2023",
-    time: "9:00 AM - 12:00 PM",
-    location: "Church Parking Lot",
-    description: "Serving our community by distributing food packages to families in need. Volunteers needed!",
+    location: "Fellowship Hall",
+    description: "Adults gather for in-depth Bible study and fellowship.",
     category: "Community"
   },
   {
-    title: "Youth Summer Camp",
-    date: "June 15-19, 2023",
-    time: "All Day",
-    location: "Camp Wildwood",
-    description: "A life-changing week of fun, fellowship, and spiritual growth for teenagers grades 7-12.",
+    title: "Friday Youth Night",
+    date: "Every Friday",
+    time: "7:00 PM",
+    location: "Youth Room",
+    description: "Youth gather for a dedicated program focused on spiritual growth and community.",
     category: "Youth"
-  },
-  {
-    title: "Vacation Bible School",
-    date: "July 10-14, 2023",
-    time: "9:00 AM - 12:00 PM",
-    location: "Church Campus",
-    description: "A fun-filled week for children ages 4-12 with Bible stories, crafts, games, and more!",
-    category: "Community"
-  },
-  {
-    title: "Church Anniversary Celebration",
-    date: "August 5, 2023",
-    time: "4:00 PM",
-    location: "Main Sanctuary & Fellowship Hall",
-    description: "Join us as we celebrate another year of God's faithfulness with special worship, testimonies, and a community dinner.",
-    category: "Special"
   }
 ];
 
-export default function EventsPage() {
+/**
+ * Fetch events from our API
+ */
+async function getEvents(): Promise<Event[]> {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const res = await fetch(`${baseUrl}/api/events`, {
+      // Force no cache to get fresh data
+      cache: 'no-store'
+    });
+
+    if (!res.ok) {
+      throw new Error('Failed to fetch events');
+    }
+
+    const data = await res.json();
+    
+    // Get database events
+    const databaseEvents = data.events || [];
+    
+    // Only use fallback events if no database events exist
+    if (databaseEvents.length === 0) {
+      console.log('No database events found, using fallback events');
+      return fallbackEventsData;
+    }
+    
+    // Return only database events when they exist
+    console.log(`Found ${databaseEvents.length} database events`);
+    return databaseEvents;
+  } catch (error) {
+    console.error('Error fetching events from API:', error);
+    return fallbackEventsData;
+  }
+}
+
+export default async function EventsPage() {
+  // Fetch events from our API (which reads from database)
+  const eventsData = await getEvents();
+
   return (
     <>
       {/* Structured Data for SEO */}

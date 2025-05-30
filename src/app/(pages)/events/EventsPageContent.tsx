@@ -4,12 +4,13 @@ import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 import EventsFilter from "./EventsFilter";
 
+// Event interface matching the database model
 interface Event {
   title: string;
   date: string;
   time: string;
   location: string;
-  description: string;
+  description?: string;
   category: "Worship" | "Community" | "Youth" | "Special";
 }
 

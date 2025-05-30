@@ -1,6 +1,6 @@
 # Templo Adoración Y Alabanza - Church Website
 
-A modern, bilingual church website built with Next.js 14, featuring responsive design, SEO optimization, and smooth animations. Serving the Wilmington, NC community with both English and Spanish language support.
+A modern, bilingual church website built with Next.js 14, featuring responsive design, SEO optimization, MongoDB database, and smooth animations. Serving the Wilmington, NC community with both English and Spanish language support.
 
 ## 🌟 Features
 
@@ -19,10 +19,16 @@ A modern, bilingual church website built with Next.js 14, featuring responsive d
 - Scroll-triggered effects
 - Professional page transitions
 
+### 🗄️ **Dynamic Data Management**
+- MongoDB database with Mongoose ODM
+- Google Calendar API integration for events
+- YouTube API integration for sermons
+- Automated weekly data synchronization via cron jobs
+
 ### 📄 **Dynamic Pages**
 - **Home**: Welcome message, service times, latest sermon
 - **Services**: Worship schedule and what to expect
-- **Events**: Upcoming church events with filtering
+- **Events**: Live events from Google Calendar with filtering
 - **Sermons**: Video sermon archive with YouTube integration
 - **Ministries**: Church ministry information and volunteer opportunities
 
@@ -42,8 +48,10 @@ A modern, bilingual church website built with Next.js 14, featuring responsive d
 
 - **Framework**: Next.js 14 (App Router)
 - **Language**: TypeScript
+- **Database**: MongoDB with Mongoose ODM
 - **Styling**: Tailwind CSS
 - **Animations**: GSAP with ScrollTrigger
+- **APIs**: Google Calendar API, YouTube Data API
 - **Font**: Geist (Vercel's optimized font)
 - **Deployment**: GitHub Actions + PM2
 - **SEO**: Next.js metadata API + structured data
@@ -52,6 +60,7 @@ A modern, bilingual church website built with Next.js 14, featuring responsive d
 
 ### Prerequisites
 - Node.js 18.17 or later
+- Docker (for MongoDB)
 - npm, yarn, pnpm, or bun
 
 ### Installation
@@ -62,26 +71,213 @@ A modern, bilingual church website built with Next.js 14, featuring responsive d
    cd templo
    ```
 
-2. **Install dependencies**
+2. **Set up MongoDB with Docker**
+   
+   **For Development:**
+   ```bash
+   # Run MongoDB with auto-restart and data persistence
+   docker run -d \
+     --name templo-mongodb \
+     --restart unless-stopped \
+     -p 27017:27017 \
+     -e MONGO_INITDB_ROOT_USERNAME=admin \
+     -e MONGO_INITDB_ROOT_PASSWORD=password123 \
+     -e MONGO_INITDB_DATABASE=templo \
+     -v templo-mongodb-data:/data/db \
+     mongo:7.0
+   ```
+
+   **For Production (VPS):**
+   ```bash
+   # Run MongoDB with stronger password and production settings
+   docker run -d \
+     --name templo-mongodb \
+     --restart unless-stopped \
+     -p 127.0.0.1:27017:27017 \
+     -e MONGO_INITDB_ROOT_USERNAME=admin \
+     -e MONGO_INITDB_ROOT_PASSWORD=your_secure_password_here \
+     -e MONGO_INITDB_DATABASE=templo \
+     -v /opt/templo/mongodb-data:/data/db \
+     mongo:7.0
+   ```
+
+3. **Set up environment variables**
+   ```bash
+   # Copy the example environment file
+   cp .env.local.example .env.local
+   
+   # Edit .env.local with your values
+   ```
+   
+   Required environment variables:
+   ```env
+   # Google API Configuration
+   GOOGLE_API_KEY=your_google_api_key_here
+   GOOGLE_CALENDAR_ID=your_google_calendar_id_here
+   YOUTUBE_CHANNEL_ID=your_youtube_channel_id_here
+   
+   # MongoDB Configuration
+   # For development
+   MONGODB_URI=mongodb://admin:password123@localhost:27017/templo?authSource=admin
+   
+   # For production
+   MONGODB_URI=mongodb://admin:your_secure_password_here@localhost:27017/templo?authSource=admin
+   
+   # Application Configuration
+   NEXT_PUBLIC_BASE_URL=http://localhost:3000
+   ```
+
+4. **Install dependencies**
    ```bash
    npm install
-   # or
-   yarn install
-   # or
-   pnpm install
    ```
 
-3. **Run the development server**
+5. **Sync initial data** (optional)
+   ```bash
+   # This will fetch events from Google Calendar and videos from YouTube
+   npm run sync
+   ```
+
+6. **Run the development server**
    ```bash
    npm run dev
-   # or
-   yarn dev
-   # or
-   pnpm dev
    ```
 
-4. **Open your browser**
-   Navigate to [http://localhost:3000](http://localhost:3000)
+7. **Open your browser**
+   - Website: [http://localhost:3000](http://localhost:3000)
+
+## 🗄️ Database Setup
+
+### MongoDB with Docker
+
+#### Development Setup
+
+```bash
+# Start MongoDB for development
+docker run -d \
+  --name templo-mongodb \
+  --restart unless-stopped \
+  -p 27017:27017 \
+  -e MONGO_INITDB_ROOT_USERNAME=admin \
+  -e MONGO_INITDB_ROOT_PASSWORD=password123 \
+  -e MONGO_INITDB_DATABASE=templo \
+  -v templo-mongodb-data:/data/db \
+  mongo:7.0
+
+# Check if it's running
+docker ps
+
+# View logs
+docker logs templo-mongodb
+
+# Stop the container
+docker stop templo-mongodb
+
+# Remove the container (keeps data in volume)
+docker rm templo-mongodb
+```
+
+#### Production Setup (VPS)
+
+```bash
+# Create data directory
+sudo mkdir -p /opt/templo/mongodb-data
+sudo chown 999:999 /opt/templo/mongodb-data
+
+# Start MongoDB for production
+docker run -d \
+  --name templo-mongodb \
+  --restart unless-stopped \
+  -p 127.0.0.1:27017:27017 \
+  -e MONGO_INITDB_ROOT_USERNAME=admin \
+  -e MONGO_INITDB_ROOT_PASSWORD=your_very_secure_password_here \
+  -e MONGO_INITDB_DATABASE=templo \
+  -v /opt/templo/mongodb-data:/data/db \
+  mongo:7.0
+
+# Verify it's running and auto-restarts
+docker ps
+docker restart templo-mongodb  # Should restart automatically
+```
+
+#### Useful Docker Commands
+
+```bash
+# Check MongoDB status
+docker ps | grep templo-mongodb
+
+# View MongoDB logs
+docker logs templo-mongodb -f
+
+# Connect to MongoDB shell
+docker exec -it templo-mongodb mongosh -u admin -p
+
+# Backup database
+docker exec templo-mongodb mongodump --uri="mongodb://admin:password@localhost:27017/templo?authSource=admin" --out=/data/backups/
+
+# Restart if needed
+docker restart templo-mongodb
+
+# Check if auto-restart is working
+docker stop templo-mongodb
+sleep 5
+docker ps | grep templo-mongodb  # Should be running again
+```
+
+#### Database Structure
+
+- **Events Collection**: Stores church events from Google Calendar
+- **Videos Collection**: Stores sermon videos from YouTube
+- **Indexes**: Created automatically by the application for optimal performance
+
+### MongoDB Atlas (Alternative)
+
+For cloud hosting, you can use MongoDB Atlas instead:
+
+```env
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/templo
+```
+
+## 🔄 Data Synchronization
+
+The application fetches data from external APIs and stores it in MongoDB for optimal performance.
+
+### Architecture
+
+```
+Cron Job → Backend API Routes → MongoDB → Frontend API Routes → Website
+```
+
+### API Endpoints
+
+#### Backend Routes (for data sync)
+- `POST /api/sync/events` - Syncs Google Calendar events to database
+- `POST /api/sync/videos` - Syncs YouTube videos to database
+
+#### Frontend Routes (for website)
+- `GET /api/events` - Returns events from database
+- `GET /api/videos` - Returns videos from database
+- `GET /api/featured-video` - Returns the latest featured video
+
+### Manual Data Sync
+
+```bash
+# Sync both events and videos
+npm run sync
+
+# Or sync individually using curl
+curl -X POST http://localhost:3000/api/sync/events
+curl -X POST http://localhost:3000/api/sync/videos
+```
+
+### Automated Sync (Production)
+
+Set up a cron job to run weekly:
+
+```bash
+# Add to crontab (runs every Sunday at 6 AM)
+0 6 * * 0 cd /path/to/templo && npm run sync
+```
 
 ## 📁 Project Structure
 
@@ -93,17 +289,31 @@ src/
 │   │   ├── sermons/       # Sermons page
 │   │   ├── services/      # Services page
 │   │   └── ministries/    # Ministries page
+│   ├── api/               # API routes
+│   │   ├── events/        # Frontend API for events
+│   │   ├── videos/        # Frontend API for videos
+│   │   ├── featured-video/ # Featured video API
+│   │   └── sync/          # Backend sync APIs
 │   ├── globals.css        # Global styles
 │   ├── layout.tsx         # Root layout
 │   └── page.tsx           # Home page
 ├── components/            # Reusable components
 │   ├── layout/           # Layout components (Navbar, Footer)
 │   └── seo/              # SEO components
+├── controllers/           # Business logic controllers
+│   ├── EventController.ts # Google Calendar + Event DB operations
+│   └── VideoController.ts # YouTube + Video DB operations
+├── models/               # MongoDB schemas
+│   ├── Event.ts          # Event model
+│   └── Video.ts          # Video model
+├── lib/                  # Utility functions
+│   ├── database.ts       # MongoDB connection
+│   └── seo.ts           # SEO helpers
 ├── context/              # React Context providers
 │   └── LanguageContext.tsx # Translation context
-├── lib/                  # Utility functions
-│   └── seo.ts           # SEO helpers
-└── types/               # TypeScript type definitions
+├── types/               # TypeScript type definitions
+└── scripts/             # Utility scripts
+    └── sync-all.mjs     # Data synchronization script
 ```
 
 ## 🌐 Language System
@@ -194,11 +404,27 @@ npm run build        # Build for production
 npm run start        # Start production server
 npm run lint         # Run ESLint
 
-# Type checking
-npm run type-check   # Check TypeScript types
+# Data Management
+npm run sync         # Sync events and videos from APIs
+
+# Database (Docker)
+docker run -d --name templo-mongodb --restart unless-stopped \
+  -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=admin \
+  -e MONGO_INITDB_ROOT_PASSWORD=password123 \
+  -v templo-mongodb-data:/data/db mongo:7.0    # Start MongoDB
+
+docker stop templo-mongodb     # Stop MongoDB
+docker start templo-mongodb    # Start MongoDB
+docker logs templo-mongodb     # View MongoDB logs
 ```
 
 ## 🏗️ Architecture Decisions
+
+### Clean Backend Architecture
+- **Controllers**: Handle business logic and external API calls
+- **Models**: Define MongoDB schemas with Mongoose
+- **API Routes**: Clean separation between backend (sync) and frontend (serve) routes
+- **Database**: Single source of truth with MongoDB
 
 ### Hybrid Rendering Strategy
 - **Server Components**: SEO-critical content, metadata generation
@@ -210,9 +436,31 @@ npm run type-check   # Check TypeScript types
 - Proper meta tags and structured data
 
 ### Performance Optimizations
+- Database indexing for fast queries
 - Image optimization with Next.js Image component
 - Font optimization with next/font
 - Code splitting and lazy loading
+
+## 🔒 Environment Variables
+
+Create a `.env.local` file with these variables:
+
+```env
+# Google API Configuration
+GOOGLE_API_KEY=your_google_api_key_here
+GOOGLE_CALENDAR_ID=your_google_calendar_id_here  
+YOUTUBE_CHANNEL_ID=your_youtube_channel_id_here
+
+# MongoDB Configuration
+# For development
+MONGODB_URI=mongodb://admin:password123@localhost:27017/templo?authSource=admin
+
+# For production
+# MONGODB_URI=mongodb://admin:your_secure_password_here@localhost:27017/templo?authSource=admin
+
+# Application Configuration  
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
+```
 
 ## 🤝 Contributing
 
