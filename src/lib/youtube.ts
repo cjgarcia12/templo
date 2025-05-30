@@ -81,7 +81,7 @@ class YouTubeService {
   private channelId: string;
 
   constructor() {
-    this.apiKey = process.env.YOUTUBE_API_KEY || '';
+    this.apiKey = process.env.GOOGLE_API_KEY || '';
     this.channelId = process.env.YOUTUBE_CHANNEL_ID || '';
     
     if (!this.apiKey || !this.channelId) {

@@ -18,20 +18,28 @@ jobs:
 
     - name: Set Environment Variables
       run: |
-        echo "YOUTUBE_API_KEY=${{ secrets.YOUTUBE_API_KEY }}" >> .env.local
+        echo "GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }}" >> .env.local
         echo "YOUTUBE_CHANNEL_ID=${{ secrets.YOUTUBE_CHANNEL_ID }}" >> .env.local
+        echo "GOOGLE_CALENDAR_ID=${{ secrets.GOOGLE_CALENDAR_ID }}" >> .env.local
+        echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env.local
+        echo "NEXT_PUBLIC_BASE_URL=${{ secrets.NEXT_PUBLIC_BASE_URL }}" >> .env.local
+        echo "NODE_ENV=production" >> .env.local
       shell: bash
+
+    - name: Build Application
+      run: npm run build
 
     - name: Setup Cron Job
       run: |
-        export YOUTUBE_API_KEY="${{ secrets.YOUTUBE_API_KEY }}"
-        export YOUTUBE_CHANNEL_ID="${{ secrets.YOUTUBE_CHANNEL_ID }}"
-        ./scripts/setup-cron.sh
+        chmod +x ./scripts/setup-cron.sh
+        # Run setup-cron.sh with auto-yes for cron installation
+        echo "y" | ./scripts/setup-cron.sh
       shell: bash
-
-    - name: Build App
-      run: npm run build
-
-    - name: Restart pm2 Server Process
+      env:
+        GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+        YOUTUBE_CHANNEL_ID: ${{ secrets.YOUTUBE_CHANNEL_ID }}
+        GOOGLE_CALENDAR_ID: ${{ secrets.GOOGLE_CALENDAR_ID }}
+        MONGODB_URI: ${{ secrets.MONGODB_URI }}
+        NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
+    - name: Restart PM2 Server Process
       run: pm2 restart temploaa --silent
-      shell: bash

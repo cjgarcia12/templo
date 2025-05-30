@@ -4,26 +4,24 @@ import { VideoController } from '@/controllers/VideoController';
 export async function GET() {
   try {
     const videoController = new VideoController();
-    const featuredVideo = await videoController.getFeaturedVideo();
+    const videos = await videoController.getAllVideos();
     
-    if (!featuredVideo) {
-      return NextResponse.json(
-        { error: 'No featured video available' },
-        { status: 404 }
-      );
-    }
-
     return NextResponse.json({
       success: true,
-      video: featuredVideo,
+      videos,
+      count: videos.length,
       lastUpdated: new Date().toISOString()
     });
   } catch (error) {
-    console.error('Error loading featured video:', error);
+    console.error('Error fetching videos:', error);
+    
     return NextResponse.json(
       { 
-        success: false,
-        error: 'Failed to load featured video from database' 
+        success: false, 
+        error: 'Failed to fetch videos from database',
+        videos: [],
+        count: 0,
+        lastUpdated: new Date().toISOString()
       },
       { status: 500 }
     );
