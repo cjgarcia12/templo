@@ -16,9 +16,6 @@ jobs:
     - name: Install Dependencies
       run: npm install
 
-    - name: Build App
-      run: npm run build
-
     - name: Set Environment Variables
       run: |
         echo "YOUTUBE_API_KEY=${{ secrets.YOUTUBE_API_KEY }}" >> .env.local
@@ -31,6 +28,9 @@ jobs:
         export YOUTUBE_CHANNEL_ID="${{ secrets.YOUTUBE_CHANNEL_ID }}"
         ./scripts/setup-cron.sh
       shell: bash
+
+    - name: Build App
+      run: npm run build
 
     - name: Restart pm2 Server Process
       run: pm2 restart temploaa --silent
