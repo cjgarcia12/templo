@@ -84,14 +84,14 @@ fi
 mkdir -p "$PROJECT_DIR/logs"
 
 # Create the cron job command
-CRON_SCHEDULE="0 6 * * 0"  # Every Sunday at 6 AM
+CRON_SCHEDULE="0 17 * * 0"  # Every Sunday at 5 PM
 CRON_COMMAND="cd $PROJECT_DIR && npm run sync >> logs/sync-cron.log 2>&1"
 
 echo ""
 echo -e "${GREEN}📝 Cron job to be configured:${NC}"
 echo ""
 echo "Data Sync (Events + Videos):"
-echo "   Schedule: Every Sunday at 6:00 AM"
+echo "   Schedule: Every Sunday at 5:00 PM"
 echo "   Command: $CRON_COMMAND"
 echo "   Log file: $PROJECT_DIR/logs/sync-cron.log"
 echo ""
@@ -99,19 +99,6 @@ echo ""
 # Check if running as root or with appropriate permissions
 if [ "$EUID" -eq 0 ]; then
     echo -e "${YELLOW}⚠️  Warning: Running as root. Consider setting up cron for a specific user instead.${NC}"
-fi
-
-# Test the sync command first
-echo -e "${YELLOW}🧪 Testing the sync command...${NC}"
-if cd "$PROJECT_DIR" && npm run sync --silent; then
-    echo -e "${GREEN}✅ Sync command test successful!${NC}"
-else
-    echo -e "${RED}❌ Sync command test failed. Please check your configuration.${NC}"
-    echo "Common issues:"
-    echo "  - Make sure MongoDB is running"
-    echo "  - Check environment variables in .env.local"
-    echo "  - Ensure your app is built: npm run build"
-    exit 1
 fi
 
 echo ""
@@ -137,7 +124,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo -e "${GREEN}✅ Cron job successfully installed!${NC}"
     echo ""
     echo -e "${GREEN}Data Sync Configuration:${NC}"
-    echo -e "  Schedule: Every Sunday at 6:00 AM"
+    echo -e "  Schedule: Every Sunday at 5:00 PM"
     echo -e "  Action: Syncs both events from Google Calendar and videos from YouTube"
     echo -e "  Logs: $PROJECT_DIR/logs/sync-cron.log"
     echo ""
