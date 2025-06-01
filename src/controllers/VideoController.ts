@@ -116,7 +116,8 @@ export class VideoController {
    */
   private convertYouTubeVideo(youtubeVideo: YouTubeVideo): Partial<IVideo> {
     const title = youtubeVideo.snippet?.title || 'Untitled Video';
-    const description = this.truncateDescription(youtubeVideo.snippet?.description || '');
+    const fullDescription = youtubeVideo.snippet?.description || '';
+    const description = this.truncateDescription(fullDescription);
     const publishedAt = youtubeVideo.snippet?.publishedAt || '';
     const duration = this.parseDuration(youtubeVideo.contentDetails?.duration || '');
     const viewCount = youtubeVideo.statistics?.viewCount || '0';
@@ -128,9 +129,12 @@ export class VideoController {
       day: 'numeric'
     });
 
+    // Parse preacher name from description
+    const preacher = this.parsePreacherFromDescription(fullDescription) || 'Pastor Leon Garcia';
+
     return {
       title,
-      preacher: 'Pastor Leon Garcia', // Default preacher
+      preacher,
       date,
       description,
       youtubeId: youtubeVideo.id || '',
@@ -141,6 +145,33 @@ export class VideoController {
       likeCount,
       isFeatured: false, // Will be set separately for the latest video
     };
+  }
+
+  /**
+   * Parse preacher name from video description
+   */
+  private parsePreacherFromDescription(description: string): string {
+    if (!description) {
+      return 'Pastor Leon Garcia'; // Default fallback
+    }
+
+    // Look for Pastor or Pastora followed by a name
+    // Case-insensitive regex that captures Pastor/Pastora + the following name(s)
+    const pastorRegex = /(?:^|\s)(pastor(?:a)?)\s+([a-zA-ZáéíóúüñÁÉÍÓÚÜÑ]+(?:\s+[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ]+)*)/i;
+    
+    const match = description.match(pastorRegex);
+    
+    if (match) {
+      // match[1] contains "Pastor" or "Pastora"
+      // match[2] contains the name(s) after Pastor/Pastora
+      const title = match[1].charAt(0).toUpperCase() + match[1].slice(1).toLowerCase(); // Capitalize first letter
+      const name = match[2];
+      
+      return `${title} ${name}`;
+    }
+
+    // Fallback to default if no pastor name found
+    return 'Pastor Leon Garcia';
   }
 
   /**
