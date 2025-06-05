@@ -29,7 +29,14 @@ export default function FeaturedVideo() {
         const response = await fetch('/api/featured-video');
         if (response.ok) {
           const data = await response.json();
-          setFeaturedVideo(data);
+          // Check if the response has a video property
+          if (data.success && data.video) {
+            setFeaturedVideo(data.video);
+          } else if (data.video) {
+            setFeaturedVideo(data.video);
+          }
+        } else {
+          console.warn('Featured video API returned non-OK status:', response.status);
         }
       } catch (error) {
         console.error('Error fetching featured video:', error);
@@ -131,21 +138,21 @@ export default function FeaturedVideo() {
           
           {(videoToShow.viewCount !== '0' || videoToShow.likeCount !== '0') && (
             <div className="flex items-center space-x-4 text-sm text-text-dark/60">
-              {videoToShow.viewCount !== '0' && (
+              {videoToShow.viewCount !== '0' && !isNaN(Number(videoToShow.viewCount)) && (
                 <span className="flex items-center">
                   <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                   </svg>
-                  {parseInt(videoToShow.viewCount).toLocaleString()} views
+                  {Number(videoToShow.viewCount).toLocaleString()} views
                 </span>
               )}
-              {videoToShow.likeCount !== '0' && (
+              {videoToShow.likeCount !== '0' && !isNaN(Number(videoToShow.likeCount)) && (
                 <span className="flex items-center">
                   <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                   </svg>
-                  {parseInt(videoToShow.likeCount).toLocaleString()} likes
+                  {Number(videoToShow.likeCount).toLocaleString()} likes
                 </span>
               )}
             </div>

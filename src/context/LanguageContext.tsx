@@ -76,18 +76,18 @@ interface TranslationKeys {
   // Ministries page
   our_ministries: string;
   ministries_description: string;
+  dance_ministry: string;
+  dance_ministry_desc: string;
   worship_team: string;
   worship_team_desc: string;
-  prayer_ministry: string;
-  prayer_ministry_desc: string;
   youth_ministry: string;
   youth_ministry_desc: string;
   children_ministry: string;
   children_ministry_desc: string;
-  outreach_missions: string;
-  outreach_missions_desc: string;
-  hospitality_team: string;
-  hospitality_team_desc: string;
+  ushers_prayer: string;
+  ushers_prayer_desc: string;
+  men_women_ministry: string;
+  men_women_ministry_desc: string;
   get_involved: string;
   get_involved_desc: string;
   contact_learn_more: string;
@@ -179,18 +179,18 @@ const translations: TranslationsType = {
     // Ministries page
     'our_ministries': 'Our Ministries',
     'ministries_description': 'Discover ways to get involved, serve, and grow in your faith journey with our various ministry opportunities.',
-    'worship_team': 'Worship Team',
-    'worship_team_desc': 'Our worship team leads the congregation in praise and worship during our services, creating an atmosphere where people can encounter God\'s presence.',
-    'prayer_ministry': 'Prayer Ministry',
-    'prayer_ministry_desc': 'Our prayer team is dedicated to interceding for the needs of the church, community, and world. We believe in the power of prayer to bring transformation.',
+    'dance_ministry': 'Dance Ministry',
+    'dance_ministry_desc': 'Join our passionate dance ministry as we express worship and praise through movement and artistic expression.',
+    'worship_team': 'Worship Team (Music)',
+    'worship_team_desc': 'Our worship team leads the congregation in praise and worship during our services through music and song, creating an atmosphere where people can encounter God\'s presence.',
     'youth_ministry': 'Youth Ministry',
     'youth_ministry_desc': 'Our youth ministry provides a safe and fun environment for young people to grow in their faith, build lasting friendships, and discover their purpose in God.',
     'children_ministry': 'Children\'s Ministry',
     'children_ministry_desc': 'Our children\'s ministry provides age-appropriate biblical teaching and fun activities to help children develop a strong foundation in faith from an early age.',
-    'outreach_missions': 'Outreach & Missions',
-    'outreach_missions_desc': 'Our outreach team serves the local community through various initiatives and supports missionary work, sharing God\'s love through practical acts of service.',
-    'hospitality_team': 'Hospitality Team',
-    'hospitality_team_desc': 'Our hospitality team creates a warm, welcoming environment for everyone who enters our doors, ensuring that visitors feel at home in our church family.',
+    'ushers_prayer': 'Ushers and Prayer',
+    'ushers_prayer_desc': 'Experience the power of prayer through our dedicated prayer ministry and welcoming ushers who serve with love and compassion.',
+    'men_women_ministry': 'Men/Women\'s Ministry',
+    'men_women_ministry_desc': 'Building strong relationships and spiritual growth through fellowship and study groups for both men and women.',
     'get_involved': 'Want to Get Involved?',
     'get_involved_desc': 'We believe everyone has unique gifts and talents that can contribute to the church body. We\'d love to help you find your place to serve!',
     'contact_learn_more': 'Contact Us to Learn More'
@@ -267,18 +267,18 @@ const translations: TranslationsType = {
     // Ministries page
     'our_ministries': 'Nuestros Ministerios',
     'ministries_description': 'Descubra formas de involucrarse, servir y crecer en su camino de fe con nuestras diversas oportunidades de ministerio.',
-    'worship_team': 'Equipo de Adoración',
-    'worship_team_desc': 'Nuestro equipo de adoración guía a la congregación en alabanza y adoración durante nuestros servicios, creando una atmósfera donde las personas pueden encontrar la presencia de Dios.',
-    'prayer_ministry': 'Ministerio de Oración',
-    'prayer_ministry_desc': 'Nuestro equipo de oración está dedicado a interceder por las necesidades de la iglesia, la comunidad y el mundo. Creemos en el poder de la oración para traer transformación.',
+    'dance_ministry': 'Ministerio de Danza',
+    'dance_ministry_desc': 'Únase a nuestro apasionado ministerio de danza mientras expresamos adoración y alabanza a través del movimiento y la expresión artística.',
+    'worship_team': 'Equipo de Adoración (Música)',
+    'worship_team_desc': 'Nuestro equipo de adoración guía a la congregación en alabanza y adoración durante nuestros servicios a través de música y canción, creando una atmósfera donde las personas pueden encontrar la presencia de Dios.',
     'youth_ministry': 'Ministerio de Jóvenes',
     'youth_ministry_desc': 'Nuestro ministerio juvenil proporciona un ambiente seguro y divertido para que los jóvenes crezcan en su fe, construyan amistades duraderas y descubran su propósito en Dios.',
     'children_ministry': 'Ministerio de Niños',
     'children_ministry_desc': 'Nuestro ministerio infantil proporciona enseñanza bíblica apropiada para su edad y actividades divertidas para ayudar a los niños a desarrollar una base sólida en la fe desde una edad temprana.',
-    'outreach_missions': 'Alcance y Misiones',
-    'outreach_missions_desc': 'Nuestro equipo de alcance sirve a la comunidad local a través de varias iniciativas y apoya el trabajo misionero, compartiendo el amor de Dios a través de actos prácticos de servicio.',
-    'hospitality_team': 'Equipo de Hospitalidad',
-    'hospitality_team_desc': 'Nuestro equipo de hospitalidad crea un ambiente cálido y acogedor para todos los que entran por nuestras puertas, asegurando que los visitantes se sientan como en casa en nuestra familia de la iglesia.',
+    'ushers_prayer': 'Ujieres y Oración',
+    'ushers_prayer_desc': 'Experimente el poder de la oración a través de nuestro ministerio de oración dedicado y ujieres acogedores que sirven con amor y compasión.',
+    'men_women_ministry': 'Ministerio de Hombres/Mujeres',
+    'men_women_ministry_desc': 'Construyendo relaciones sólidas y crecimiento espiritual a través de grupos de compañerismo y estudio para hombres y mujeres.',
     'get_involved': '¿Quiere Involucrarse?',
     'get_involved_desc': 'Creemos que todos tienen dones y talentos únicos que pueden contribuir al cuerpo de la iglesia. ¡Nos encantaría ayudarle a encontrar su lugar para servir!',
     'contact_learn_more': 'Contáctenos para Obtener Más Información'

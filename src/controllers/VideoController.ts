@@ -281,7 +281,21 @@ export class VideoController {
   async getFeaturedVideo(): Promise<IVideo | null> {
     try {
       await connectDB();
-      return await Video.findOne({ isFeatured: true });
+      
+      // First, try to find a video specifically marked as featured
+      let featuredVideo = await Video.findOne({ isFeatured: true });
+      
+      // If no featured video is found, fall back to the most recent video
+      if (!featuredVideo) {
+        featuredVideo = await Video.findOne().sort({ publishedAt: -1 });
+        
+        // If we found a video, mark it as featured for next time
+        if (featuredVideo) {
+          await Video.findByIdAndUpdate(featuredVideo._id, { isFeatured: true });
+        }
+      }
+      
+      return featuredVideo;
     } catch (error) {
       console.error('Error fetching featured video from database:', error);
       throw error;

@@ -52,20 +52,20 @@ export default function MinistriesPageContent({ ministries }: MinistriesPageCont
                   </div>
                 </div>
                 <h3 className="text-xl font-bold text-primary-brown mb-2 group-hover:text-primary-gold transition-colors duration-300" itemProp="name">
-                  {index === 0 ? t('worship_team') :
-                   index === 1 ? t('prayer_ministry') :
+                  {index === 0 ? t('dance_ministry') :
+                   index === 1 ? t('worship_team') :
                    index === 2 ? t('youth_ministry') :
                    index === 3 ? t('children_ministry') :
-                   index === 4 ? t('outreach_missions') :
-                   t('hospitality_team')}
+                   index === 4 ? t('ushers_prayer') :
+                   t('men_women_ministry')}
                 </h3>
                 <p className="text-text-dark/80 mb-6 flex-grow" itemProp="description">
-                  {index === 0 ? t('worship_team_desc') :
-                   index === 1 ? t('prayer_ministry_desc') :
+                  {index === 0 ? t('dance_ministry_desc') :
+                   index === 1 ? t('worship_team_desc') :
                    index === 2 ? t('youth_ministry_desc') :
                    index === 3 ? t('children_ministry_desc') :
-                   index === 4 ? t('outreach_missions_desc') :
-                   t('hospitality_team_desc')}
+                   index === 4 ? t('ushers_prayer_desc') :
+                   t('men_women_ministry_desc')}
                 </p>
                 <div className="text-sm font-medium text-primary-gold border-t border-primary-gold/20 pt-4">
                   {ministry.leader}
