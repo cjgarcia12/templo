@@ -154,16 +154,16 @@ export default function Home() {
               A welcoming community of faith in Wilmington, NC where everyone can experience God&apos;s love and grace.
             </p>
             
-            <div className="hero-cta space-x-4">
+            <div className="hero-cta flex flex-col sm:flex-row gap-4 items-center justify-center">
               <Link
                 href="/services"
-                className="inline-block bg-primary-brown hover:bg-primary-brown/90 text-white font-medium py-3 px-6 rounded-md transition-colors"
+                className="w-full sm:w-auto text-center bg-primary-brown hover:bg-primary-brown/90 text-white font-medium py-3 px-6 rounded-md transition-colors"
               >
                 {t('our_services')}
               </Link>
               <Link
                 href="/sermons"
-                className="inline-block bg-transparent border-2 border-primary-gold hover:bg-primary-gold/10 text-primary-gold font-medium py-3 px-6 rounded-md transition-colors"
+                className="w-full sm:w-auto text-center bg-transparent border-2 border-primary-gold hover:bg-primary-gold/10 text-primary-gold font-medium py-3 px-6 rounded-md transition-colors"
               >
                 {t('watch_more_sermons')}
               </Link>
@@ -301,16 +301,16 @@ export default function Home() {
                           <p className="text-lg text-text-dark/80 max-w-2xl mx-auto mb-8">
                 {t('welcome_community')}
               </p>
-            <div className="space-x-4">
+            <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
               <Link
                 href="/services"
-                className="inline-block bg-primary-brown hover:bg-primary-brown/90 text-white font-medium py-3 px-6 rounded-md transition-colors"
+                className="w-full sm:w-auto text-center bg-primary-brown hover:bg-primary-brown/90 text-white font-medium py-3 px-6 rounded-md transition-colors"
               >
                 {t('plan_visit')}
               </Link>
               <Link
                 href="#contact"
-                className="inline-block bg-transparent border-2 border-primary-gold hover:bg-primary-gold/10 text-primary-gold font-medium py-3 px-6 rounded-md transition-colors"
+                className="w-full sm:w-auto text-center bg-transparent border-2 border-primary-gold hover:bg-primary-gold/10 text-primary-gold font-medium py-3 px-6 rounded-md transition-colors"
               >
                 {t('contact_us')}
               </Link>

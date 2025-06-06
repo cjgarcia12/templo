@@ -46,7 +46,7 @@ export default function EventsPageContent({ events }: EventsPageContentProps) {
             {t('calendar_description')}
           </p>
           <Link
-            href="#subscribe"
+            href="https://calendar.google.com/calendar/u/0?cid=NjRiYjI1ZTFmNThlOGJiNzBhMzA4YjE0ODFkNTg3NDA3Y2M1ODZiNDEzN2QzNmFjN2E3NjhkMTRiOWI0MTA0ZUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t"
             className="inline-block bg-primary-brown hover:bg-primary-brown/90 text-white font-medium py-3 px-6 rounded-md transition-colors"
           >
             {t('subscribe_calendar')}
