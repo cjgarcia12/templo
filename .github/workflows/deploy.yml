@@ -29,17 +29,5 @@ jobs:
     - name: Build Application
       run: npm run build
 
-    - name: Setup Cron Job
-      run: |
-        chmod +x ./scripts/setup-cron.sh
-        # Run setup-cron.sh with auto-yes for cron installation
-        echo "y" | ./scripts/setup-cron.sh
-      shell: bash
-      env:
-        GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
-        YOUTUBE_CHANNEL_ID: ${{ secrets.YOUTUBE_CHANNEL_ID }}
-        GOOGLE_CALENDAR_ID: ${{ secrets.GOOGLE_CALENDAR_ID }}
-        MONGODB_URI: ${{ secrets.MONGODB_URI }}
-        NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
     - name: Restart PM2 Server Process
       run: pm2 restart temploaa --silent

@@ -5,6 +5,8 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { LanguageProvider } from "@/context/LanguageContext";
 import StructuredData from "@/components/seo/StructuredData";
+// Initialize cron job when app starts
+import '@/lib/cron-init';
 
 const lora = Lora({
   variable: "--font-lora",
@@ -106,9 +108,9 @@ export default function RootLayout({
         <meta name="theme-color" content="#8B4513" />
         <meta name="msapplication-TileColor" content="#8B4513" />
       </head>
-      <body
-        className={`${lora.variable} ${raleway.variable} antialiased min-h-screen flex flex-col`}
-      >
+              <body
+          className={`${lora.variable} ${raleway.variable} antialiased min-h-screen flex flex-col`}
+        >
         {/* Organization Structured Data */}
         <StructuredData 
           type="Organization" 
