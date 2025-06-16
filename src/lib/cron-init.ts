@@ -72,15 +72,15 @@ async function syncAllData() {
 function getNextRunTime() {
   try {
     const now = new Date();
-    const tomorrow6AM = new Date();
-    tomorrow6AM.setDate(now.getDate() + 1);
-    tomorrow6AM.setHours(6, 0, 0, 0);
+    const nextSunday = new Date();
     
-    // If it's before 6 AM today, next run is today at 6 AM
-    if (now.getHours() < 6) {
-      const today6AM = new Date();
-      today6AM.setHours(6, 0, 0, 0);
-      return today6AM.toLocaleString('en-US', { 
+    // Calculate days until next Sunday (0 = Sunday, 1 = Monday, etc.)
+    const daysUntilSunday = (7 - now.getDay()) % 7;
+    
+    // If today is Sunday and it's before 5 PM, next run is today at 5 PM
+    if (now.getDay() === 0 && now.getHours() < 17) {
+      nextSunday.setHours(17, 0, 0, 0);
+      return nextSunday.toLocaleString('en-US', { 
         timeZone: 'America/New_York',
         weekday: 'long',
         month: 'short', 
@@ -91,7 +91,12 @@ function getNextRunTime() {
       });
     }
     
-    return tomorrow6AM.toLocaleString('en-US', { 
+    // Otherwise, find next Sunday
+    const daysToAdd = daysUntilSunday === 0 ? 7 : daysUntilSunday;
+    nextSunday.setDate(now.getDate() + daysToAdd);
+    nextSunday.setHours(17, 0, 0, 0);
+    
+    return nextSunday.toLocaleString('en-US', { 
       timeZone: 'America/New_York',
       weekday: 'long',
       month: 'short', 
@@ -101,7 +106,7 @@ function getNextRunTime() {
       timeZoneName: 'short'
     });
   } catch {
-    return 'Tomorrow at 6:00 AM EST';
+    return 'Next Sunday at 5:00 PM EST';
   }
 }
 
@@ -115,9 +120,9 @@ export function startCronJob() {
     console.log('🔄 Stopping existing cron job...');
   }
   
-  // Schedule: Every day at 6:00 AM
+  // Schedule: Every Sunday at 5:00 PM
   // You can change this schedule as needed
-  const schedule = '0 6 * * *'; // 6 AM daily
+  const schedule = '0 17 * * 0'; // 5 PM every Sunday
   
   const job = cron.schedule(schedule, async () => {
     await syncAllData();
@@ -131,9 +136,9 @@ export function startCronJob() {
   // Enhanced logging
   console.log('\n🎯 ================== CRON JOB STATUS ==================');
   console.log(`✅ Auto-sync cron job is now ACTIVE`);
-  console.log(`📅 Schedule: Daily at 6:00 AM (Eastern Time)`);
+  console.log(`📅 Schedule: Every Sunday at 5:00 PM (Eastern Time)`);
   console.log(`🔄 Next sync: ${getNextRunTime()}`);
-  console.log(`Cron job is running: ${isCronJobRunning()}`);
+  console.log(`⚡ Manual Sync: npm run sync`);
   console.log('=======================================================\n');
   
   return job;
