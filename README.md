@@ -230,14 +230,6 @@ docker ps | grep templo-mongodb  # Should be running again
 - **Videos Collection**: Stores sermon videos from YouTube
 - **Indexes**: Created automatically by the application for optimal performance
 
-### MongoDB Atlas (Alternative)
-
-For cloud hosting, you can use MongoDB Atlas instead:
-
-```env
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/templo
-```
-
 ## 🔄 Data Synchronization
 
 The application fetches data from external APIs and stores it in MongoDB for optimal performance.
