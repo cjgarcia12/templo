@@ -1,8 +1,13 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { EventController } from '@/controllers/EventController';
+import { requireApiKey } from '@/lib/auth-middleware';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    // Require API key for sync operations
+    const authError = requireApiKey(request);
+    if (authError) return authError;
+    
     const eventController = new EventController();
     const events = await eventController.getAllEvents();
     
