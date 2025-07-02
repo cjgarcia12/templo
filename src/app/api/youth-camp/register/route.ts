@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/database';
 import YouthCampRegistration from '@/models/YouthCampRegistration';
+import { requireApiKey } from '@/lib/auth-middleware';
 
 export async function POST(request: NextRequest) {
   try {
@@ -140,6 +141,10 @@ export async function POST(request: NextRequest) {
 // GET endpoint to retrieve registrations (for admin use)
 export async function GET(request: NextRequest) {
   try {
+    // Require API key for admin access
+    const authError = requireApiKey(request);
+    if (authError) return authError;
+    
     await connectDB();
     
     const { searchParams } = new URL(request.url);

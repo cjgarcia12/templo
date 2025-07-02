@@ -1,8 +1,13 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { EventController } from '@/controllers/EventController';
+import { requireApiKey } from '@/lib/auth-middleware';
 
-export async function POST() {
+export async function POST(request: NextRequest) {
   try {
+    // Require API key for sync operations
+    const authError = requireApiKey(request);
+    if (authError) return authError;
+    
     console.log('🗓️ Starting event sync...');
     
     const eventController = new EventController();
