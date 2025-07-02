@@ -6,7 +6,7 @@ import { useState } from 'react';
 interface FormData {
   participantName: string;
   parentGuardianName: string;
-  gender: string;
+  sex: string;
   age: string;
   contactPhone: string;
   contactEmail: string;
@@ -24,7 +24,7 @@ interface FormData {
 const initialFormData: FormData = {
   participantName: '',
   parentGuardianName: '',
-  gender: '',
+  sex: '',
   age: '',
   contactPhone: '',
   contactEmail: '',
@@ -84,7 +84,7 @@ export default function YouthCampForm() {
     // Required field validation
     if (!formData.participantName.trim()) newErrors.participantName = 'Participant name is required';
     if (!formData.parentGuardianName.trim()) newErrors.parentGuardianName = 'Parent/Guardian name is required';
-    if (!formData.gender) newErrors.gender = 'Gender is required';
+    if (!formData.sex) newErrors.sex = 'Sex is required';
     if (!formData.age) newErrors.age = 'Age is required';
     if (!formData.contactPhone.trim()) newErrors.contactPhone = 'Contact phone is required';
     if (!formData.contactEmail.trim()) newErrors.contactEmail = 'Contact email is required';
@@ -95,8 +95,8 @@ export default function YouthCampForm() {
     
     // Age validation
     const age = parseInt(formData.age);
-    if (isNaN(age) || age < 8 || age > 18) {
-      newErrors.age = 'Age must be between 8 and 18 years';
+    if (isNaN(age) || age < 13) {
+      newErrors.age = 'Age must be 13 or older';
     }
     
     // Email validation
@@ -241,24 +241,23 @@ export default function YouthCampForm() {
             </div>
 
             <div>
-              <label htmlFor="gender" className="block text-sm font-medium text-gray-700 mb-1">
-                Gender *
+              <label htmlFor="sex" className="block text-sm font-medium text-gray-700 mb-1">
+                Sex *
               </label>
               <select
-                id="gender"
-                name="gender"
-                value={formData.gender}
+                id="sex"
+                name="sex"
+                value={formData.sex}
                 onChange={handleInputChange}
                 className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-gold ${
-                  errors.gender ? 'border-red-500' : 'border-gray-300'
+                  errors.sex ? 'border-red-500' : 'border-gray-300'
                 }`}
               >
-                <option value="">Select gender</option>
+                <option value="">Select sex</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
-                <option value="Other">Other</option>
               </select>
-              {errors.gender && <p className="text-red-500 text-sm mt-1">{errors.gender}</p>}
+              {errors.sex && <p className="text-red-500 text-sm mt-1">{errors.sex}</p>}
             </div>
 
             <div>
@@ -271,12 +270,11 @@ export default function YouthCampForm() {
                 name="age"
                 value={formData.age}
                 onChange={handleInputChange}
-                min="8"
-                max="18"
+                min="13"
                 className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-gold ${
                   errors.age ? 'border-red-500' : 'border-gray-300'
                 }`}
-                placeholder="Age (8-18)"
+                placeholder="Age (13+)"
               />
               {errors.age && <p className="text-red-500 text-sm mt-1">{errors.age}</p>}
             </div>
@@ -460,25 +458,46 @@ export default function YouthCampForm() {
           
           <div className="bg-white p-4 rounded border text-sm text-gray-700 mb-4 max-h-40 overflow-y-auto">
             <p className="mb-3">
-              <strong>RELEASE AND WAIVER OF LIABILITY</strong>
+              <strong>COMPREHENSIVE RELEASE AND WAIVER OF LIABILITY, ASSUMPTION OF RISK, AND INDEMNITY AGREEMENT</strong>
             </p>
             <p className="mb-3">
-              I, the undersigned parent/guardian, understand that participation in the Youth Camp activities involves inherent risks, including but not limited to physical injury, property damage, or other harm. In consideration of my child&apos;s participation in the Youth Camp program organized by Templo Adoracion Y Alabanza, I hereby:
+              <strong>PLEASE READ CAREFULLY - THIS IS A LEGAL DOCUMENT THAT AFFECTS YOUR LEGAL RIGHTS</strong>
             </p>
             <p className="mb-3">
-              1. <strong>RELEASE AND HOLD HARMLESS</strong> Templo Adoracion Y Alabanza, its pastors, staff, volunteers, and representatives from any and all claims, demands, or causes of action arising out of or related to any loss, damage, or injury, including death, that may be sustained by my child or by any property belonging to my child while participating in the Youth Camp or while on the premises where the activities are being conducted.
+              In consideration of being permitted to participate in the Youth Camp program organized by Templo Adoracion Y Alabanza (&quot;the Church&quot;), I acknowledge and agree to the following terms:
             </p>
             <p className="mb-3">
-              2. <strong>ASSUME ALL RISKS</strong> associated with my child&apos;s participation, including but not limited to: risks of injury from activities, premises conditions, equipment use, transportation, and other participants.
+              <strong>1. ACKNOWLEDGMENT OF RISKS:</strong> I understand that participation in Youth Camp activities involves inherent and other risks including, but not limited to: physical injury, emotional distress, property damage, illness, permanent disability, paralysis, or death. These risks may result from the activities themselves, the conduct of participants, staff, or volunteers, the conditions of facilities or equipment, weather conditions, or the negligence of any party. I understand that these risks cannot be eliminated regardless of the care taken to avoid injuries.
             </p>
             <p className="mb-3">
-              3. <strong>AUTHORIZE MEDICAL TREATMENT</strong> in case of emergency. I give permission for camp staff to authorize emergency medical treatment for my child if I cannot be reached immediately.
+              <strong>2. ASSUMPTION OF RISK:</strong> I voluntarily assume all risks associated with participation in the Youth Camp, whether known or unknown, including travel to and from the camp location, accommodation, meals, recreational activities, devotional activities, and all other camp-related activities.
             </p>
             <p className="mb-3">
-              4. <strong>ACKNOWLEDGE</strong> that I have read this waiver and understand its terms, and I sign it voluntarily with full knowledge of its significance.
+              <strong>3. RELEASE AND WAIVER:</strong> I, for myself {parseInt(formData.age) >= 18 ? '' : 'and on behalf of my minor child'}, hereby release, waive, discharge, and covenant not to sue the Church, its pastors, staff, board members, volunteers, representatives, successors, and assigns from any and all liability, claims, demands, actions, and causes of action whatsoever arising out of or related to any loss, damage, or injury, including death, that may be sustained while participating in the Youth Camp or while on the premises where activities are conducted.
+            </p>
+            <p className="mb-3">
+              <strong>4. INDEMNIFICATION:</strong> I agree to indemnify and hold harmless the Church from any loss or liability incurred as a result of {parseInt(formData.age) >= 18 ? 'my' : 'my child\'s'} participation in the Youth Camp, including attorney fees and costs.
+            </p>
+            <p className="mb-3">
+              <strong>5. MEDICAL AUTHORIZATION:</strong> I authorize the Church staff to obtain emergency medical treatment for {parseInt(formData.age) >= 18 ? 'me' : 'my child'} if necessary. I understand that the Church will attempt to contact me in case of medical emergency, but if I cannot be reached immediately, I authorize camp staff to make medical decisions in the best interest of {parseInt(formData.age) >= 18 ? 'the participant' : 'my child'}. I agree to be financially responsible for any medical expenses incurred.
+            </p>
+            <p className="mb-3">
+              <strong>6. TRANSPORTATION:</strong> I acknowledge that transportation may be provided by the Church or volunteers, and I assume all risks associated with such transportation.
+            </p>
+            <p className="mb-3">
+              <strong>7. CONDUCT AND DISCIPLINE:</strong> I understand that {parseInt(formData.age) >= 18 ? 'I am' : 'my child is'} expected to follow all camp rules and guidelines. The Church reserves the right to dismiss any participant whose conduct is deemed inappropriate, disruptive, or dangerous, without refund.
+            </p>
+            <p className="mb-3">
+              <strong>8. MEDIA RELEASE:</strong> I grant permission for the Church to use photographs, videos, or other media of {parseInt(formData.age) >= 18 ? 'me' : 'my child'} taken during the Youth Camp for promotional, educational, or ministry purposes.
+            </p>
+            <p className="mb-3">
+              <strong>9. SEVERABILITY:</strong> If any portion of this agreement is deemed invalid, the remainder shall continue in full force and effect.
+            </p>
+            <p className="mb-3">
+              <strong>10. GOVERNING LAW:</strong> This agreement shall be governed by the laws of the state where the Church is located.
             </p>
             <p>
-              This waiver shall be binding upon my heirs, successors, and assigns.
+              <strong>I HAVE READ THIS WAIVER AND RELEASE, UNDERSTAND ITS TERMS, UNDERSTAND THAT I HAVE GIVEN UP SUBSTANTIAL RIGHTS BY SIGNING IT, AND SIGN IT FREELY AND VOLUNTARILY WITHOUT ANY INDUCEMENT.</strong>
             </p>
           </div>
 
@@ -493,7 +512,7 @@ export default function YouthCampForm() {
                 className="mt-1 w-4 h-4 text-primary-gold focus:ring-primary-gold border-gray-300 rounded"
               />
               <label htmlFor="waiverAccepted" className="text-sm text-gray-700">
-                <span className="font-medium">I have read, understood, and agree to the terms of the liability waiver above. *</span>
+                <span className="font-medium">I have read, understood, and agree to the terms of the comprehensive liability waiver above. *</span>
                 <br />
                 <span className="text-red-600">Required: You must accept this waiver to complete registration.</span>
               </label>
@@ -504,7 +523,7 @@ export default function YouthCampForm() {
 
             <div>
               <label htmlFor="parentSignature" className="block text-sm font-medium text-gray-700 mb-1">
-                Parent/Guardian Digital Signature *
+                {parseInt(formData.age) >= 18 ? 'Digital Signature' : 'Parent/Guardian Digital Signature'} *
               </label>
               <input
                 type="text"
@@ -515,11 +534,14 @@ export default function YouthCampForm() {
                 className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-gold ${
                   errors.parentSignature ? 'border-red-500' : 'border-gray-300'
                 }`}
-                placeholder="Type your full name as digital signature"
+                placeholder={parseInt(formData.age) >= 18 ? "Type your full name as digital signature" : "Type parent/guardian full name as digital signature"}
               />
               {errors.parentSignature && <p className="text-red-500 text-sm mt-1">{errors.parentSignature}</p>}
               <p className="text-xs text-gray-500 mt-1">
-                By typing your name above, you are providing a digital signature and agreeing to all terms.
+                {parseInt(formData.age) >= 18 
+                  ? "By typing your name above, you are providing a digital signature and agreeing to all terms as an adult participant."
+                  : "By typing your name above as parent/guardian, you are providing a digital signature and agreeing to all terms on behalf of your minor child."
+                }
               </p>
             </div>
           </div>
