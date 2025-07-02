@@ -24,6 +24,7 @@ jobs:
         echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env.local
         echo "NEXT_PUBLIC_BASE_URL=${{ secrets.NEXT_PUBLIC_BASE_URL }}" >> .env.local
         echo "NODE_ENV=production" >> .env.local
+        echo "API_SECRET_KEY=${{ secrets.API_SECRET_KEY }}" >> .env.local
       shell: bash
 
     - name: Build Application
