@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "sync": "node -e \"const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'; Promise.all([fetch(baseUrl + '/api/sync/events', {method: 'POST'}), fetch(baseUrl + '/api/sync/videos', {method: 'POST'})]).then(() => console.log('✅ Manual sync completed')).catch(e => console.error('❌ Sync failed:', e))\""
+    "sync": "node -e \"const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'; const apiKey = process.env.API_SECRET_KEY; const headers = {'Content-Type': 'application/json', 'x-api-key': apiKey}; Promise.all([fetch(baseUrl + '/api/sync/events', {method: 'POST', headers}), fetch(baseUrl + '/api/sync/videos', {method: 'POST', headers})]).then(() => console.log('✅ Manual sync completed')).catch(e => console.error('❌ Sync failed:', e))\""
   },
   "dependencies": {
     "dotenv": "^16.5.0",

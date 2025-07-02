@@ -108,9 +108,9 @@ export default function RootLayout({
         <meta name="theme-color" content="#8B4513" />
         <meta name="msapplication-TileColor" content="#8B4513" />
       </head>
-              <body
-          className={`${lora.variable} ${raleway.variable} antialiased min-h-screen flex flex-col`}
-        >
+      <body
+        className={`${lora.variable} ${raleway.variable} antialiased min-h-screen flex flex-col`}
+      >
         {/* Organization Structured Data */}
         <StructuredData 
           type="Organization" 
