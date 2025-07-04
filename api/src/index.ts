@@ -12,6 +12,7 @@ import connectDB from './db/connection';
 import routes from './routes';
 import { globalErrorHandler, notFoundHandler } from './middleware/errorHandler';
 import { generalLimiter } from './middleware/rateLimiting';
+import { initializeCronJobs, stopCronJobs } from './services/cronService';
 
 const app = express();
 
@@ -80,6 +81,9 @@ async function startServer() {
     await connectDB();
     console.log('📦 Database connected successfully');
 
+    // Initialize cron jobs
+    initializeCronJobs();
+
     // Start listening
     app.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);
@@ -113,5 +117,18 @@ process.on('SIGINT', () => {
 
 // Start the server
 startServer();
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('🛑 SIGTERM received, shutting down gracefully...');
+  stopCronJobs();
+  process.exit(0);
+});
+
+process.on('SIGINT', () => {
+  console.log('🛑 SIGINT received, shutting down gracefully...');
+  stopCronJobs();
+  process.exit(0);
+});
 
 export default app;

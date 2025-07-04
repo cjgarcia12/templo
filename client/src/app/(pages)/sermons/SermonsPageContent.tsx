@@ -2,10 +2,24 @@
 
 import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
-import { SermonData } from "@/lib/youtube";
+
+// Video interface matching our API response
+interface Video {
+  title: string;
+  preacher: string;
+  date: string;
+  description: string;
+  youtubeId: string;
+  category: string;
+  publishedAt: string;
+  duration: string;
+  viewCount: string;
+  likeCount: string;
+  isFeatured?: boolean;
+}
 
 interface SermonsPageContentProps {
-  sermons: SermonData[];
+  sermons: Video[];
 }
 
 export default function SermonsPageContent({ sermons }: SermonsPageContentProps) {
@@ -88,9 +102,6 @@ export default function SermonsPageContent({ sermons }: SermonsPageContentProps)
                   {sermon.preacher}
                 </p>
                 
-                <p className="text-sm text-text-dark/80 line-clamp-2 mb-4" itemProp="description">
-                  {sermon.description}
-                </p>
                 
                 <div className="flex items-center justify-between">
                   <a 

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
+import { apiGet } from "@/lib/api";
 
 interface SermonData {
   title: string;
@@ -26,17 +27,12 @@ export default function FeaturedVideo() {
     // Fetch featured video data from API endpoint
     const fetchFeaturedVideo = async () => {
       try {
-        const response = await fetch('/api/featured-video');
-        if (response.ok) {
-          const data = await response.json();
-          // Check if the response has a video property
-          if (data.success && data.video) {
-            setFeaturedVideo(data.video);
-          } else if (data.video) {
-            setFeaturedVideo(data.video);
-          }
-        } else {
-          console.warn('Featured video API returned non-OK status:', response.status);
+        const data = await apiGet<{ success: boolean; video: SermonData }>('/videos/featured');
+        // Check if the response has a video property
+        if (data.success && data.video) {
+          setFeaturedVideo(data.video);
+        } else if (data.video) {
+          setFeaturedVideo(data.video);
         }
       } catch (error) {
         console.error('Error fetching featured video:', error);

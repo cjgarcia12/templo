@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { EventController } from '@/controllers/EventController';
-import { requireApiKey, optionalApiKey } from '@/middleware/auth';
+import { requireApiKey } from '@/middleware/auth';
 import { catchAsync } from '@/middleware/errorHandler';
 import { syncLimiter, generalLimiter } from '@/middleware/rateLimiting';
 
@@ -14,7 +14,7 @@ const eventController = new EventController();
 router.get(
   '/',
   generalLimiter,
-  optionalApiKey,
+  requireApiKey,
   catchAsync(async (req: Request, res: Response) => {
     const events = await eventController.getAllEvents();
     
@@ -37,7 +37,7 @@ router.get(
 router.get(
   '/upcoming',
   generalLimiter,
-  optionalApiKey,
+  requireApiKey,
   catchAsync(async (req: Request, res: Response) => {
     const events = await eventController.getUpcomingEvents();
     
@@ -57,7 +57,7 @@ router.get(
 router.get(
   '/category/:category',
   generalLimiter,
-  optionalApiKey,
+  requireApiKey,
   catchAsync(async (req: Request, res: Response) => {
     const { category } = req.params;
     
@@ -74,7 +74,7 @@ router.get(
       category as 'Worship' | 'Community' | 'Youth' | 'Special'
     );
     
-    res.json({
+    return res.json({
       success: true,
       events,
       count: events.length,
@@ -91,6 +91,7 @@ router.get(
 router.get(
   '/fallback',
   generalLimiter,
+  requireApiKey,
   catchAsync(async (req: Request, res: Response) => {
     const fallbackEvents = eventController.getFallbackEvents();
     
@@ -135,6 +136,7 @@ router.post(
 router.get(
   '/sync',
   generalLimiter,
+  requireApiKey,
   catchAsync(async (req: Request, res: Response) => {
     res.json({
       message: 'Event sync endpoint is ready. Use POST to trigger sync.',

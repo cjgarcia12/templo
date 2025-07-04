@@ -8,15 +8,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "sync": "node -e \"const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'; const apiKey = process.env.API_SECRET_KEY; const headers = {'Content-Type': 'application/json', 'x-api-key': apiKey}; Promise.all([fetch(baseUrl + '/api/sync/events', {method: 'POST', headers}), fetch(baseUrl + '/api/sync/videos', {method: 'POST', headers})]).then(() => console.log('✅ Manual sync completed')).catch(e => console.error('❌ Sync failed:', e))\""
+    "sync": "echo '🔄 To sync data, use the API server sync endpoints or run the sync from the API directory'"
   },
   "dependencies": {
-    "dotenv": "^16.5.0",
-    "googleapis": "^144.0.0",
     "gsap": "^3.13.0",
-    "mongoose": "^8.15.1",
     "next": "15.3.2",
-    "node-cron": "^3.0.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
@@ -24,7 +20,6 @@
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
-    "@types/node-cron": "^3.0.11",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",

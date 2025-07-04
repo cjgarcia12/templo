@@ -35,7 +35,6 @@ Express.js backend for the Templo Church website, providing REST API endpoints f
 
    # Security
    API_SECRET_KEY=your_secret_api_key_here
-   JWT_SECRET=your_jwt_secret_here
 
    # CORS
    FRONTEND_URL=http://localhost:3000

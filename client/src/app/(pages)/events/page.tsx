@@ -2,6 +2,7 @@ import { generateSEO } from "@/lib/seo";
 import StructuredData from "@/components/seo/StructuredData";
 import EventsClient from "./EventsClient";
 import EventsPageContent from "./EventsPageContent";
+import { apiGet } from "@/lib/api";
 
 // Event interface matching our database model
 interface Event {
@@ -55,24 +56,17 @@ const fallbackEventsData: Event[] = [
     description: "Youth gather for a dedicated program focused on spiritual growth and community.",
     category: "Youth"
   }
-];
+  ];
 
 /**
  * Fetch events from our API
  */
 async function getEvents(): Promise<Event[]> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-    const res = await fetch(`${baseUrl}/api/events`, {
+    const data = await apiGet<{ success: boolean; events: Event[] }>('/events', {
       // Force no cache to get fresh data
       cache: 'no-store'
     });
-
-    if (!res.ok) {
-      throw new Error('Failed to fetch events');
-    }
-
-    const data = await res.json();
     
     // Get database events
     const databaseEvents = data.events || [];

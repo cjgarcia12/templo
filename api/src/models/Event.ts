@@ -50,7 +50,6 @@ const EventSchema = new Schema<IEvent>(
     },
     googleEventId: {
       type: String,
-      unique: true,
       sparse: true, // Allows multiple documents with null values
       trim: true
     },
@@ -63,7 +62,7 @@ const EventSchema = new Schema<IEvent>(
 // Indexes for better query performance
 EventSchema.index({ date: 1 });
 EventSchema.index({ category: 1 });
-EventSchema.index({ googleEventId: 1 });
+EventSchema.index({ googleEventId: 1 }, { unique: true, sparse: true });
 EventSchema.index({ createdAt: -1 });
 
 const Event = mongoose.model<IEvent>('Event', EventSchema);

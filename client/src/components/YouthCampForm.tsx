@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from 'react';
+import { publicPost } from '@/lib/api';
 // import { useLanguage } from '@/context/LanguageContext';
 
 interface FormData {
@@ -134,15 +135,7 @@ export default function YouthCampForm() {
     setSubmitStatus('idle');
     
     try {
-      const response = await fetch('/api/youth-camp/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-      
-      const result = await response.json();
+      const result = await publicPost<{ success: boolean; error?: string }>('/youth-camp/register', formData);
       
       if (result.success) {
         setSubmitStatus('success');

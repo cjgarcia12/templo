@@ -2,6 +2,7 @@ import { generateSEO } from "@/lib/seo";
 import StructuredData from "@/components/seo/StructuredData";
 import SermonsClient from "./SermonsClient";
 import SermonsPageContent from "./SermonsPageContent";
+import { apiGet } from "@/lib/api";
 
 // Video interface from our database model
 interface Video {
@@ -71,17 +72,10 @@ const fallbackSermonsData: Video[] = [
  */
 async function getVideos(): Promise<Video[]> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-    const res = await fetch(`${baseUrl}/api/videos`, {
+    const data = await apiGet<{ success: boolean; videos: Video[] }>('/videos', {
       // Revalidate every 10 minutes in production
       next: { revalidate: 600 }
     });
-
-    if (!res.ok) {
-      throw new Error('Failed to fetch videos');
-    }
-
-    const data = await res.json();
     return data.videos || fallbackSermonsData;
   } catch (error) {
     console.error('Error fetching videos from API:', error);

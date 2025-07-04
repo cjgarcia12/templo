@@ -37,12 +37,12 @@ const VideoSchema = new Schema<IVideo>(
     description: {
       type: String,
       required: [true, 'Description is required'],
-      maxlength: [500, 'Description cannot exceed 500 characters']
+      maxlength: [500, 'Description cannot exceed 500 characters'],
+      default: 'No description available'
     },
     youtubeId: {
       type: String,
       required: [true, 'YouTube ID is required'],
-      unique: true,
       match: [/^[a-zA-Z0-9_-]{11}$/, 'Invalid YouTube ID format']
     },
     category: {
@@ -59,7 +59,7 @@ const VideoSchema = new Schema<IVideo>(
     duration: {
       type: String,
       required: [true, 'Duration is required'],
-      match: [/^\d+:\d{2}$/, 'Duration must be in MM:SS or HH:MM format']
+      match: [/^\d+:\d{2}(:\d{2})?$/, 'Duration must be in MM:SS, HH:MM, or HH:MM:SS format']
     },
     viewCount: {
       type: String,
@@ -92,7 +92,7 @@ const VideoSchema = new Schema<IVideo>(
 );
 
 // Indexes for better query performance
-VideoSchema.index({ youtubeId: 1 });
+VideoSchema.index({ youtubeId: 1 }, { unique: true });
 VideoSchema.index({ category: 1 });
 VideoSchema.index({ isFeatured: 1 });
 VideoSchema.index({ publishedAt: -1 });

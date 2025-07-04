@@ -120,8 +120,8 @@ export class VideoController {
     const title = youtubeVideo.snippet?.title || 'Untitled Video';
     const fullDescription = youtubeVideo.snippet?.description || '';
     const description = this.truncateDescription(fullDescription);
-    const publishedAt = youtubeVideo.snippet?.publishedAt || '';
-    const duration = this.parseDuration(youtubeVideo.contentDetails?.duration || '');
+    const publishedAt = youtubeVideo.snippet?.publishedAt || new Date().toISOString();
+    const duration = this.parseDuration(youtubeVideo.contentDetails?.duration || 'PT0M0S');
     const viewCount = youtubeVideo.statistics?.viewCount || '0';
     const likeCount = youtubeVideo.statistics?.likeCount || '0';
 
@@ -134,12 +134,18 @@ export class VideoController {
     // Parse preacher name from description
     const preacher = this.parsePreacherFromDescription(fullDescription) || 'Pastor Leon Garcia';
 
+    // Validate required YouTube ID
+    const youtubeId = youtubeVideo.id;
+    if (!youtubeId || youtubeId.length !== 11) {
+      throw new Error(`Invalid YouTube ID: ${youtubeId}`);
+    }
+
     return {
       title,
       preacher,
       date,
       description,
-      youtubeId: youtubeVideo.id || '',
+      youtubeId,
       category: 'Sunday Service', // Default category
       publishedAt,
       duration,
@@ -180,6 +186,11 @@ export class VideoController {
    * Truncate description
    */
   private truncateDescription(description: string): string {
+    // Provide fallback if description is empty or undefined
+    if (!description || description.trim().length === 0) {
+      return 'No description available';
+    }
+    
     const maxLength = 150;
     if (description.length <= maxLength) return description;
     
@@ -196,7 +207,7 @@ export class VideoController {
    */
   private parseDuration(duration: string): string {
     const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
-    if (!match) return '';
+    if (!match) return '0:00'; // Fallback for invalid duration
 
     const hours = parseInt(match[1] || '0');
     const minutes = parseInt(match[2] || '0');
@@ -238,14 +249,33 @@ export class VideoController {
         };
       }
 
-      // Convert to our format
-      const convertedVideos = youtubeVideos.map((video: any) => this.convertYouTubeVideo(video));
+      // Convert to our format, filtering out any that fail validation
+      const convertedVideos: Partial<IVideo>[] = [];
+      let skippedCount = 0;
+      
+      for (const video of youtubeVideos) {
+        try {
+          const convertedVideo = this.convertYouTubeVideo(video);
+          convertedVideos.push(convertedVideo);
+        } catch (error) {
+          console.warn(`⚠️ Skipping video due to validation error:`, error instanceof Error ? error.message : error);
+          skippedCount++;
+        }
+      }
+
+      if (convertedVideos.length === 0) {
+        return {
+          success: false,
+          message: 'No valid videos found after conversion',
+          count: 0
+        };
+      }
 
       // Clear existing videos and insert new ones
       console.log('🗄️ Clearing existing videos...');
       await Video.deleteMany({});
       
-      console.log('💾 Inserting new videos...');
+      console.log(`💾 Inserting ${convertedVideos.length} valid videos${skippedCount > 0 ? ` (skipped ${skippedCount})` : ''}...`);
       const insertedVideos = await Video.insertMany(convertedVideos);
 
       // Set the most recent video as featured
@@ -258,9 +288,13 @@ export class VideoController {
         console.log(`⭐ Set featured video: ${latestVideo.title}`);
       }
 
+      const message = skippedCount > 0 
+        ? `Successfully synced ${insertedVideos.length} videos (${skippedCount} skipped due to validation errors)`
+        : `Successfully synced ${insertedVideos.length} videos`;
+
       return {
         success: true,
-        message: `Successfully synced ${insertedVideos.length} videos`,
+        message,
         count: insertedVideos.length
       };
     } catch (error) {

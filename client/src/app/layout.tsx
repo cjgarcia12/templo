@@ -5,8 +5,6 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { LanguageProvider } from "@/context/LanguageContext";
 import StructuredData from "@/components/seo/StructuredData";
-// Initialize cron job when app starts
-import '@/lib/cron-init';
 
 const lora = Lora({
   variable: "--font-lora",
