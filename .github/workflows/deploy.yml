@@ -12,7 +12,7 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
-      
+
     - name: Install Client Dependencies
       working-directory: ./client
       run: npm install
@@ -20,13 +20,11 @@ jobs:
     - name: Create Client env file
       working-directory: ./client
       run: |
-        echo '{
-          "NEXT_PUBLIC_API_KEY": "${{ secrets.NEXT_PUBLIC_API_KEY }}",
-          "NEXT_PUBLIC_API_URL": "${{ secrets.NEXT_PUBLIC_API_URL }}",
-        }' > .env.local
+        echo "NEXT_PUBLIC_API_KEY=${{ secrets.NEXT_PUBLIC_API_KEY }}" >> .env.local
+        echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}" >> .env.local
       shell: bash
-    
-    - name: Create Client Build
+
+    - name: Build Client
       working-directory: ./client
       run: npm run build
       shell: bash
@@ -38,16 +36,14 @@ jobs:
     - name: Create API env file
       working-directory: ./api
       run: |
-        echo '{
-          "MONGODB_URI": "${{ secrets.MONGODB_URI }}",
-          "API_SECRET_KEY": "${{ secrets.API_SECRET_KEY }}",
-          "GOOGLE_API_KEY": "${{ secrets.GOOGLE_API_KEY }}",
-          "YOUTUBE_CHANNEL_ID": "${{ secrets.YOUTUBE_CHANNEL_ID }}",
-          "GOOGLE_CALENDAR_ID": "${{ secrets.GOOGLE_CALENDAR_ID }}",
-          "PORT": "${{ secrets.PORT }}",
-          "NODE_ENV": "production",
-          "FRONTEND_URL": "${{ secrets.FRONTEND_URL }}",
-        }' > .env
+        echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env
+        echo "API_SECRET_KEY=${{ secrets.API_SECRET_KEY }}" >> .env
+        echo "GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }}" >> .env
+        echo "YOUTUBE_CHANNEL_ID=${{ secrets.YOUTUBE_CHANNEL_ID }}" >> .env
+        echo "GOOGLE_CALENDAR_ID=${{ secrets.GOOGLE_CALENDAR_ID }}" >> .env
+        echo "PORT=4000" >> .env
+        echo "NODE_ENV=production" >> .env
+        echo "FRONTEND_URL=${{ secrets.FRONTEND_URL }}" >> .env
       shell: bash
 
     - name: Build API
@@ -55,6 +51,9 @@ jobs:
       run: npm run build
       shell: bash
 
-    - name: Restart PM2 Server Process
-      run: pm2 restart temploaa --silent
+    - name: Restart PM2 Processes
+      run: |
+        pm2 restart templo-client || PORT=3000 pm2 start "npm start" --name templo-client --cwd ./client
+        pm2 restart templo-api || PORT=4000 pm2 start "node dist/index.js" --name templo-api --cwd ./api
+        pm2 save
       shell: bash
