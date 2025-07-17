@@ -20,7 +20,7 @@ jobs:
     - name: Create Client env file
       working-directory: ./client
       run: |
-        echo "NEXT_PUBLIC_API_KEY=${{ secrets.NEXT_PUBLIC_API_KEY }}" >> .env.local
+        echo "NEXT_PUBLIC_API_KEY=${{ secrets.API_SECRET_KEY}}" >> .env.local
         echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}" >> .env.local
       shell: bash
 
