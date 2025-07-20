@@ -61,7 +61,7 @@ const YouthCampRegistrationSchema = new Schema<IYouthCampRegistration>({
     type: Number,
     required: [true, 'Age is required'],
     min: [13, 'Minimum age is 13 years'],
-    max: [25, 'Maximum age is 25 years'],
+    max: [100, 'Maximum age is 100 years'],
     validate: {
       validator: Number.isInteger,
       message: 'Age must be a whole number'

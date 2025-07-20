@@ -286,7 +286,6 @@ export default function YouthCampForm() {
                 value={formData.age}
                 onChange={handleInputChange}
                 min="13"
-                max="25"
                 className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-gold ${
                   errors.age ? 'border-red-500' : 'border-gray-300'
                 }`}

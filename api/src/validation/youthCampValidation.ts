@@ -32,8 +32,7 @@ export const youthCampRegistrationSchema = yup.object({
     .required('Age is required')
     .integer('Age must be a whole number')
     .min(13, 'Minimum age is 13 years')
-    .max(25, 'Maximum age is 25 years'),
-
+    .max(100, 'Maximum age is 100 years'),
   // Contact Information
   contactPhone: yup
     .string()
