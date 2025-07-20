@@ -4,7 +4,7 @@ export interface IYouthCampRegistration extends Document {
   // Personal Information
   participantName: string;
   parentGuardianName: string;
-  gender: 'Male' | 'Female' | 'Other';
+  sex: 'Male' | 'Female';
   age: number;
   
   // Contact Information
@@ -49,19 +49,19 @@ const YouthCampRegistrationSchema = new Schema<IYouthCampRegistration>({
     maxlength: [100, 'Name cannot exceed 100 characters'],
     minlength: [2, 'Name must be at least 2 characters']
   },
-  gender: {
+  sex: {
     type: String,
-    required: [true, 'Gender is required'],
+    required: [true, 'Sex is required'],
     enum: {
-      values: ['Male', 'Female', 'Other'],
-      message: 'Gender must be Male, Female, or Other'
+      values: ['Male', 'Female'],
+      message: 'Sex must be Male or Female'
     }
   },
   age: {
     type: Number,
     required: [true, 'Age is required'],
-    min: [8, 'Minimum age is 8 years'],
-    max: [18, 'Maximum age is 18 years'],
+    min: [13, 'Minimum age is 13 years'],
+    max: [25, 'Maximum age is 25 years'],
     validate: {
       validator: Number.isInteger,
       message: 'Age must be a whole number'
@@ -80,7 +80,7 @@ const YouthCampRegistrationSchema = new Schema<IYouthCampRegistration>({
     required: [true, 'Contact email is required'],
     trim: true,
     lowercase: true,
-    match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please enter a valid email address']
+    match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/, 'Please enter a valid email address']
   },
   emergencyContactName: {
     type: String,

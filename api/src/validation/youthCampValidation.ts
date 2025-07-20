@@ -3,8 +3,8 @@ import * as yup from 'yup';
 // Phone number regex for (XXX) XXX-XXXX format
 const phoneRegex = /^\(\d{3}\) \d{3}-\d{4}$/;
 
-// Email regex
-const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+// Email regex - more lenient to allow various TLD lengths
+const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/;
 
 export const youthCampRegistrationSchema = yup.object({
   // Personal Information
@@ -22,17 +22,17 @@ export const youthCampRegistrationSchema = yup.object({
     .min(2, 'Name must be at least 2 characters')
     .max(100, 'Name cannot exceed 100 characters'),
     
-  gender: yup
+  sex: yup
     .string()
-    .required('Gender is required')
-    .oneOf(['Male', 'Female', 'Other'], 'Gender must be Male, Female, or Other'),
+    .required('Sex is required')
+    .oneOf(['Male', 'Female'], 'Sex must be Male or Female'),
     
   age: yup
     .number()
     .required('Age is required')
     .integer('Age must be a whole number')
-    .min(8, 'Minimum age is 8 years')
-    .max(18, 'Maximum age is 18 years'),
+    .min(13, 'Minimum age is 13 years')
+    .max(25, 'Maximum age is 25 years'),
 
   // Contact Information
   contactPhone: yup

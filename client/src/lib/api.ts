@@ -1,8 +1,29 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 
+// Validate API_URL format
+if (API_URL && !API_URL.match(/^https?:\/\//)) {
+  console.error('❌ NEXT_PUBLIC_API_URL must include protocol (http:// or https://)');
+  console.error(`❌ Current value: "${API_URL}"`);
+  console.error('❌ Expected format: "https://api.temploaa.com" or "http://localhost:3001/api"');
+  throw new Error('Invalid API_URL: Missing protocol');
+}
+
 if (!API_KEY) {
   console.warn('⚠️ NEXT_PUBLIC_API_KEY not set. API requests may fail.');
+}
+
+/**
+ * Utility to validate URL before making requests
+ */
+function validateUrl(url: string): void {
+  try {
+    new URL(url);
+  } catch (error) {
+    console.error('❌ Invalid URL detected:', url);
+    console.error('❌ Original error:', error);
+    throw new Error(`Invalid URL: ${url}. Check your NEXT_PUBLIC_API_URL environment variable.`);
+  }
 }
 
 /**
@@ -30,6 +51,9 @@ export async function apiRequest(
 ): Promise<Response> {
   const url = `${API_URL}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
   
+  // Validate URL before making request
+  validateUrl(url);
+  
   const config: RequestInit = {
     ...options,
     headers: createHeaders(options.headers as Record<string, string> || {})
@@ -46,6 +70,7 @@ export async function apiRequest(
     return response;
   } catch (error) {
     console.error(`API request failed for ${endpoint}:`, error);
+    console.error(`Full URL attempted: ${url}`);
     throw error;
   }
 }
@@ -82,6 +107,9 @@ export async function publicRequest(
 ): Promise<Response> {
   const url = `${API_URL}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
   
+  // Validate URL before making request
+  validateUrl(url);
+  
   const config: RequestInit = {
     ...options,
     headers: {
@@ -101,6 +129,7 @@ export async function publicRequest(
     return response;
   } catch (error) {
     console.error(`Public API request failed for ${endpoint}:`, error);
+    console.error(`Full URL attempted: ${url}`);
     throw error;
   }
 }

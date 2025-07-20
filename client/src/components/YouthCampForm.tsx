@@ -2,7 +2,9 @@
 
 import { useState } from 'react';
 import { publicPost } from '@/lib/api';
-// import { useLanguage } from '@/context/LanguageContext';
+import SuccessModal from './SuccessModal';
+import WaiverModal from './WaiverModal';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface FormData {
   participantName: string;
@@ -41,12 +43,18 @@ const initialFormData: FormData = {
 };
 
 export default function YouthCampForm() {
-  // const { t } = useLanguage();
+  const { t } = useLanguage();
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [errors, setErrors] = useState<Partial<FormData>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [submitMessage, setSubmitMessage] = useState('');
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showWaiverModal, setShowWaiverModal] = useState(false);
+  const [registrationData, setRegistrationData] = useState<{
+    registrationId?: string;
+    participantName?: string;
+  }>({});
 
   // Format phone number as user types
   const formatPhoneNumber = (value: string) => {
@@ -83,36 +91,36 @@ export default function YouthCampForm() {
     const newErrors: Partial<FormData> = {};
     
     // Required field validation
-    if (!formData.participantName.trim()) newErrors.participantName = 'Participant name is required';
-    if (!formData.parentGuardianName.trim()) newErrors.parentGuardianName = 'Parent/Guardian name is required';
-    if (!formData.sex) newErrors.sex = 'Sex is required';
-    if (!formData.age) newErrors.age = 'Age is required';
-    if (!formData.contactPhone.trim()) newErrors.contactPhone = 'Contact phone is required';
-    if (!formData.contactEmail.trim()) newErrors.contactEmail = 'Contact email is required';
-    if (!formData.emergencyContactName.trim()) newErrors.emergencyContactName = 'Emergency contact name is required';
-    if (!formData.emergencyContactPhone.trim()) newErrors.emergencyContactPhone = 'Emergency contact phone is required';
-    if (!formData.emergencyContactRelation.trim()) newErrors.emergencyContactRelation = 'Emergency contact relation is required';
-    if (!formData.parentSignature.trim()) newErrors.parentSignature = 'Parent/Guardian signature is required';
+    if (!formData.participantName.trim()) newErrors.participantName = t('participant_name_required');
+    if (!formData.parentGuardianName.trim()) newErrors.parentGuardianName = t('parent_guardian_name_required');
+    if (!formData.sex) newErrors.sex = t('sex_required');
+    if (!formData.age) newErrors.age = t('age_required');
+    if (!formData.contactPhone.trim()) newErrors.contactPhone = t('contact_phone_required');
+    if (!formData.contactEmail.trim()) newErrors.contactEmail = t('contact_email_required');
+    if (!formData.emergencyContactName.trim()) newErrors.emergencyContactName = t('emergency_contact_name_required');
+    if (!formData.emergencyContactPhone.trim()) newErrors.emergencyContactPhone = t('emergency_contact_phone_required');
+    if (!formData.emergencyContactRelation.trim()) newErrors.emergencyContactRelation = t('emergency_contact_relation_required');
+    if (!formData.parentSignature.trim()) newErrors.parentSignature = t('parent_signature_required');
     
     // Age validation
     const age = parseInt(formData.age);
-    if (isNaN(age) || age < 13) {
-      newErrors.age = 'Age must be 13 or older';
+    if (isNaN(age) || age < 13 ) {
+      newErrors.age = t('age_must_be_13_older');
     }
     
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (formData.contactEmail && !emailRegex.test(formData.contactEmail)) {
-      newErrors.contactEmail = 'Please enter a valid email address';
+      newErrors.contactEmail = t('valid_email_address');
     }
     
     // Phone validation
     const phoneRegex = /^\(\d{3}\) \d{3}-\d{4}$/;
     if (formData.contactPhone && !phoneRegex.test(formData.contactPhone)) {
-      newErrors.contactPhone = 'Please enter a valid phone number';
+      newErrors.contactPhone = t('valid_phone_number');
     }
     if (formData.emergencyContactPhone && !phoneRegex.test(formData.emergencyContactPhone)) {
-      newErrors.emergencyContactPhone = 'Please enter a valid phone number';
+      newErrors.emergencyContactPhone = t('valid_phone_number');
     }
     
     // Waiver validation
@@ -135,50 +143,64 @@ export default function YouthCampForm() {
     setSubmitStatus('idle');
     
     try {
-      const result = await publicPost<{ success: boolean; error?: string }>('/youth-camp/register', formData);
+      const result = await publicPost<{ success: boolean; error?: string; registrationId?: string }>('/youth-camp/register', formData);
       
       if (result.success) {
-        setSubmitStatus('success');
-        setSubmitMessage('Registration submitted successfully! We will contact you soon.');
+        setRegistrationData({
+          registrationId: result.registrationId,
+          participantName: formData.participantName
+        });
+        setShowSuccessModal(true);
         setFormData(initialFormData);
         setErrors({});
       } else {
         setSubmitStatus('error');
-        setSubmitMessage(result.error || 'Registration failed. Please try again.');
+        setSubmitMessage(result.error || t('registration_failed'));
       }
     } catch (error: unknown) {
       setSubmitStatus('error');
-      setSubmitMessage('Network error. Please check your connection and try again.');
+      setSubmitMessage(t('network_error'));
       console.error('Error submitting form:', error);
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  return (
-    <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-8">
-      <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-primary-brown mb-4">
-          Youth Camp Registration 2025
-        </h2>
-        <p className="text-lg text-text-dark/80 mb-2">
-          August 6-9, 2025
-        </p>
-        <p className="text-text-dark/70">
-          Ages 13 and up • A fun-filled Christian camp experience
-        </p>
-      </div>
+  const handleSuccessModalClose = () => {
+    setShowSuccessModal(false);
+    setSubmitStatus('idle');
+    setRegistrationData({});
+  };
 
-      {submitStatus === 'success' && (
-        <div className="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-md">
-          <div className="flex items-center">
-            <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-            </svg>
-            {submitMessage}
-          </div>
+  return (
+    <>
+      {/* Success Modal */}
+      <SuccessModal
+        isOpen={showSuccessModal}
+        onClose={handleSuccessModalClose}
+        registrationId={registrationData.registrationId}
+        participantName={registrationData.participantName}
+      />
+
+      {/* Waiver Modal */}
+      <WaiverModal
+        isOpen={showWaiverModal}
+        onClose={() => setShowWaiverModal(false)}
+        participantAge={parseInt(formData.age) || undefined}
+      />
+
+      <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-8">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-primary-brown mb-4">
+            {t('youth_camp_registration')}
+          </h2>
+          <p className="text-lg text-text-dark/80 mb-2">
+            {t('youth_camp_dates')}
+          </p>
+          <p className="text-text-dark/70">
+            {t('youth_camp_description')}
+          </p>
         </div>
-      )}
 
       {submitStatus === 'error' && (
         <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-md">
@@ -194,12 +216,12 @@ export default function YouthCampForm() {
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Personal Information */}
         <div className="bg-gray-50 p-6 rounded-lg">
-          <h3 className="text-xl font-semibold text-primary-brown mb-4">Personal Information</h3>
+          <h3 className="text-xl font-semibold text-primary-brown mb-4">{t('personal_information')}</h3>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label htmlFor="participantName" className="block text-sm font-medium text-gray-700 mb-1">
-                Participant Name *
+                {t('participant_name')} *
               </label>
               <input
                 type="text"
@@ -210,14 +232,14 @@ export default function YouthCampForm() {
                 className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-gold ${
                   errors.participantName ? 'border-red-500' : 'border-gray-300'
                 }`}
-                placeholder="Enter participant's full name"
+                placeholder={t('participant_name_placeholder')}
               />
               {errors.participantName && <p className="text-red-500 text-sm mt-1">{errors.participantName}</p>}
             </div>
 
             <div>
               <label htmlFor="parentGuardianName" className="block text-sm font-medium text-gray-700 mb-1">
-                Parent/Guardian Name *
+                {t('parent_guardian_name')} *
               </label>
               <input
                 type="text"
@@ -228,14 +250,14 @@ export default function YouthCampForm() {
                 className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-gold ${
                   errors.parentGuardianName ? 'border-red-500' : 'border-gray-300'
                 }`}
-                placeholder="Enter parent/guardian's full name"
+                placeholder={t('parent_guardian_name_placeholder')}
               />
               {errors.parentGuardianName && <p className="text-red-500 text-sm mt-1">{errors.parentGuardianName}</p>}
             </div>
 
             <div>
               <label htmlFor="sex" className="block text-sm font-medium text-gray-700 mb-1">
-                Sex *
+                {t('sex')} *
               </label>
               <select
                 id="sex"
@@ -246,16 +268,16 @@ export default function YouthCampForm() {
                   errors.sex ? 'border-red-500' : 'border-gray-300'
                 }`}
               >
-                <option value="">Select sex</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
+                <option value="">{t('select_sex')}</option>
+                <option value="Male">{t('male')}</option>
+                <option value="Female">{t('female')}</option>
               </select>
               {errors.sex && <p className="text-red-500 text-sm mt-1">{errors.sex}</p>}
             </div>
 
             <div>
               <label htmlFor="age" className="block text-sm font-medium text-gray-700 mb-1">
-                Age *
+                {t('age')} *
               </label>
               <input
                 type="number"
@@ -264,10 +286,11 @@ export default function YouthCampForm() {
                 value={formData.age}
                 onChange={handleInputChange}
                 min="13"
+                max="25"
                 className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-gold ${
                   errors.age ? 'border-red-500' : 'border-gray-300'
                 }`}
-                placeholder="Age (13+)"
+                placeholder={t('age_placeholder')}
               />
               {errors.age && <p className="text-red-500 text-sm mt-1">{errors.age}</p>}
             </div>
@@ -276,12 +299,12 @@ export default function YouthCampForm() {
 
         {/* Contact Information */}
         <div className="bg-gray-50 p-6 rounded-lg">
-          <h3 className="text-xl font-semibold text-primary-brown mb-4">Contact Information</h3>
+          <h3 className="text-xl font-semibold text-primary-brown mb-4">{t('contact_information')}</h3>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label htmlFor="contactPhone" className="block text-sm font-medium text-gray-700 mb-1">
-                Contact Phone *
+                {t('contact_phone')} *
               </label>
               <input
                 type="tel"
@@ -292,14 +315,14 @@ export default function YouthCampForm() {
                 className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-gold ${
                   errors.contactPhone ? 'border-red-500' : 'border-gray-300'
                 }`}
-                placeholder="(XXX) XXX-XXXX"
+                placeholder={t('contact_phone_placeholder')}
               />
               {errors.contactPhone && <p className="text-red-500 text-sm mt-1">{errors.contactPhone}</p>}
             </div>
 
             <div>
               <label htmlFor="contactEmail" className="block text-sm font-medium text-gray-700 mb-1">
-                Contact Email *
+                {t('contact_email')} *
               </label>
               <input
                 type="email"
@@ -310,7 +333,7 @@ export default function YouthCampForm() {
                 className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-gold ${
                   errors.contactEmail ? 'border-red-500' : 'border-gray-300'
                 }`}
-                placeholder="Enter email address"
+                placeholder={t('contact_email_placeholder')}
               />
               {errors.contactEmail && <p className="text-red-500 text-sm mt-1">{errors.contactEmail}</p>}
             </div>
@@ -319,12 +342,12 @@ export default function YouthCampForm() {
 
         {/* Emergency Contact */}
         <div className="bg-gray-50 p-6 rounded-lg">
-          <h3 className="text-xl font-semibold text-primary-brown mb-4">Emergency Contact</h3>
+          <h3 className="text-xl font-semibold text-primary-brown mb-4">{t('emergency_contact')}</h3>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label htmlFor="emergencyContactName" className="block text-sm font-medium text-gray-700 mb-1">
-                Emergency Contact Name *
+                {t('emergency_contact_name')} *
               </label>
               <input
                 type="text"
@@ -335,14 +358,14 @@ export default function YouthCampForm() {
                 className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-gold ${
                   errors.emergencyContactName ? 'border-red-500' : 'border-gray-300'
                 }`}
-                placeholder="Emergency contact full name"
+                placeholder={t('emergency_contact_name_placeholder')}
               />
               {errors.emergencyContactName && <p className="text-red-500 text-sm mt-1">{errors.emergencyContactName}</p>}
             </div>
 
             <div>
               <label htmlFor="emergencyContactPhone" className="block text-sm font-medium text-gray-700 mb-1">
-                Emergency Contact Phone *
+                {t('emergency_contact_phone')} *
               </label>
               <input
                 type="tel"
@@ -353,14 +376,14 @@ export default function YouthCampForm() {
                 className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-gold ${
                   errors.emergencyContactPhone ? 'border-red-500' : 'border-gray-300'
                 }`}
-                placeholder="(XXX) XXX-XXXX"
+                placeholder={t('emergency_contact_phone_placeholder')}
               />
               {errors.emergencyContactPhone && <p className="text-red-500 text-sm mt-1">{errors.emergencyContactPhone}</p>}
             </div>
 
             <div>
               <label htmlFor="emergencyContactRelation" className="block text-sm font-medium text-gray-700 mb-1">
-                Relationship *
+                {t('relationship')} *
               </label>
               <input
                 type="text"
@@ -371,7 +394,7 @@ export default function YouthCampForm() {
                 className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-gold ${
                   errors.emergencyContactRelation ? 'border-red-500' : 'border-gray-300'
                 }`}
-                placeholder="e.g., Grandparent, Aunt, etc."
+                placeholder={t('relationship_placeholder')}
               />
               {errors.emergencyContactRelation && <p className="text-red-500 text-sm mt-1">{errors.emergencyContactRelation}</p>}
             </div>
@@ -380,12 +403,12 @@ export default function YouthCampForm() {
 
         {/* Special Requirements */}
         <div className="bg-gray-50 p-6 rounded-lg">
-          <h3 className="text-xl font-semibold text-primary-brown mb-4">Special Requirements & Medical Information</h3>
+          <h3 className="text-xl font-semibold text-primary-brown mb-4">{t('special_requirements_medical')}</h3>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label htmlFor="accommodations" className="block text-sm font-medium text-gray-700 mb-1">
-                Special Accommodations
+                {t('special_accommodations')}
               </label>
               <textarea
                 id="accommodations"
@@ -394,13 +417,13 @@ export default function YouthCampForm() {
                 onChange={handleInputChange}
                 rows={3}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-gold"
-                placeholder="Any special accommodations needed..."
+                placeholder={t('special_accommodations_placeholder')}
               />
             </div>
 
             <div>
               <label htmlFor="medicalConditions" className="block text-sm font-medium text-gray-700 mb-1">
-                Medical Conditions
+                {t('medical_conditions')}
               </label>
               <textarea
                 id="medicalConditions"
@@ -409,13 +432,13 @@ export default function YouthCampForm() {
                 onChange={handleInputChange}
                 rows={3}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-gold"
-                placeholder="Any medical conditions we should know about..."
+                placeholder={t('medical_conditions_placeholder')}
               />
             </div>
 
             <div>
               <label htmlFor="allergies" className="block text-sm font-medium text-gray-700 mb-1">
-                Allergies
+                {t('allergies')}
               </label>
               <textarea
                 id="allergies"
@@ -424,13 +447,13 @@ export default function YouthCampForm() {
                 onChange={handleInputChange}
                 rows={3}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-gold"
-                placeholder="Any allergies (food, medication, environmental)..."
+                placeholder={t('allergies_placeholder')}
               />
             </div>
 
             <div>
               <label htmlFor="dietaryRestrictions" className="block text-sm font-medium text-gray-700 mb-1">
-                Dietary Restrictions
+                {t('dietary_restrictions')}
               </label>
               <textarea
                 id="dietaryRestrictions"
@@ -439,7 +462,7 @@ export default function YouthCampForm() {
                 onChange={handleInputChange}
                 rows={3}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-gold"
-                placeholder="Any dietary restrictions or preferences..."
+                placeholder={t('dietary_restrictions_placeholder')}
               />
             </div>
           </div>
@@ -447,9 +470,18 @@ export default function YouthCampForm() {
 
         {/* Waiver */}
         <div className="bg-red-50 p-6 rounded-lg border border-red-200">
-          <h3 className="text-xl font-semibold text-red-800 mb-4">Liability Waiver & Agreement</h3>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-xl font-semibold text-red-800">{t('liability_waiver_agreement')}</h3>
+            <button
+              type="button"
+              onClick={() => setShowWaiverModal(true)}
+              className="text-primary-brown hover:text-primary-brown/80 underline text-sm font-medium"
+            >
+              {t('view_full_waiver')}
+            </button>
+          </div>
           
-          <div className="bg-white p-4 rounded border text-sm text-gray-700 mb-4 max-h-40 overflow-y-auto">
+          <div className="bg-white p-4 rounded border text-sm text-gray-700 mb-4">
             <p className="mb-3">
               <strong>COMPREHENSIVE RELEASE AND WAIVER OF LIABILITY, ASSUMPTION OF RISK, AND INDEMNITY AGREEMENT</strong>
             </p>
@@ -457,40 +489,16 @@ export default function YouthCampForm() {
               <strong>PLEASE READ CAREFULLY - THIS IS A LEGAL DOCUMENT THAT AFFECTS YOUR LEGAL RIGHTS</strong>
             </p>
             <p className="mb-3">
-              In consideration of being permitted to participate in the Youth Camp program organized by Templo Adoracion Y Alabanza (&quot;the Church&quot;), I acknowledge and agree to the following terms:
+              {t('waiver_summary')}
             </p>
-            <p className="mb-3">
-              <strong>1. ACKNOWLEDGMENT OF RISKS:</strong> I understand that participation in Youth Camp activities involves inherent and other risks including, but not limited to: physical injury, emotional distress, property damage, illness, permanent disability, paralysis, or death. These risks may result from the activities themselves, the conduct of participants, staff, or volunteers, the conditions of facilities or equipment, weather conditions, or the negligence of any party. I understand that these risks cannot be eliminated regardless of the care taken to avoid injuries.
-            </p>
-            <p className="mb-3">
-              <strong>2. ASSUMPTION OF RISK:</strong> I voluntarily assume all risks associated with participation in the Youth Camp, whether known or unknown, including travel to and from the camp location, accommodation, meals, recreational activities, devotional activities, and all other camp-related activities.
-            </p>
-            <p className="mb-3">
-              <strong>3. RELEASE AND WAIVER:</strong> I, for myself {parseInt(formData.age) >= 18 ? '' : 'and on behalf of my minor child'}, hereby release, waive, discharge, and covenant not to sue the Church, its pastors, staff, board members, volunteers, representatives, successors, and assigns from any and all liability, claims, demands, actions, and causes of action whatsoever arising out of or related to any loss, damage, or injury, including death, that may be sustained while participating in the Youth Camp or while on the premises where activities are conducted.
-            </p>
-            <p className="mb-3">
-              <strong>4. INDEMNIFICATION:</strong> I agree to indemnify and hold harmless the Church from any loss or liability incurred as a result of {parseInt(formData.age) >= 18 ? 'my' : 'my child\'s'} participation in the Youth Camp, including attorney fees and costs.
-            </p>
-            <p className="mb-3">
-              <strong>5. MEDICAL AUTHORIZATION:</strong> I authorize the Church staff to obtain emergency medical treatment for {parseInt(formData.age) >= 18 ? 'me' : 'my child'} if necessary. I understand that the Church will attempt to contact me in case of medical emergency, but if I cannot be reached immediately, I authorize camp staff to make medical decisions in the best interest of {parseInt(formData.age) >= 18 ? 'the participant' : 'my child'}. I agree to be financially responsible for any medical expenses incurred.
-            </p>
-            <p className="mb-3">
-              <strong>6. TRANSPORTATION:</strong> I acknowledge that transportation may be provided by the Church or volunteers, and I assume all risks associated with such transportation.
-            </p>
-            <p className="mb-3">
-              <strong>7. CONDUCT AND DISCIPLINE:</strong> I understand that {parseInt(formData.age) >= 18 ? 'I am' : 'my child is'} expected to follow all camp rules and guidelines. The Church reserves the right to dismiss any participant whose conduct is deemed inappropriate, disruptive, or dangerous, without refund.
-            </p>
-            <p className="mb-3">
-              <strong>8. MEDIA RELEASE:</strong> I grant permission for the Church to use photographs, videos, or other media of {parseInt(formData.age) >= 18 ? 'me' : 'my child'} taken during the Youth Camp for promotional, educational, or ministry purposes.
-            </p>
-            <p className="mb-3">
-              <strong>9. SEVERABILITY:</strong> If any portion of this agreement is deemed invalid, the remainder shall continue in full force and effect.
-            </p>
-            <p className="mb-3">
-              <strong>10. GOVERNING LAW:</strong> This agreement shall be governed by the laws of the state where the Church is located.
-            </p>
-            <p>
-              <strong>I HAVE READ THIS WAIVER AND RELEASE, UNDERSTAND ITS TERMS, UNDERSTAND THAT I HAVE GIVEN UP SUBSTANTIAL RIGHTS BY SIGNING IT, AND SIGN IT FREELY AND VOLUNTARILY WITHOUT ANY INDUCEMENT.</strong>
+            <p className="text-blue-600 font-medium">
+              <button 
+                type="button"
+                onClick={() => setShowWaiverModal(true)}
+                className="hover:text-blue-800 underline"
+              >
+                {t('click_read_complete_waiver')}
+              </button>
             </p>
           </div>
 
@@ -505,18 +513,18 @@ export default function YouthCampForm() {
                 className="mt-1 w-4 h-4 text-primary-gold focus:ring-primary-gold border-gray-300 rounded"
               />
               <label htmlFor="waiverAccepted" className="text-sm text-gray-700">
-                <span className="font-medium">I have read, understood, and agree to the terms of the comprehensive liability waiver above. *</span>
+                <span className="font-medium">{t('waiver_agreement_accepted')} *</span>
                 <br />
-                <span className="text-red-600">Required: You must accept this waiver to complete registration.</span>
+                <span className="text-red-600">{t('waiver_acceptance_required')}</span>
               </label>
             </div>
             {errors.waiverAccepted && (
-              <p className="text-red-500 text-sm">You must accept the waiver to complete registration.</p>
+              <p className="text-red-500 text-sm">{t('waiver_must_be_accepted')}</p>
             )}
 
             <div>
               <label htmlFor="parentSignature" className="block text-sm font-medium text-gray-700 mb-1">
-                {parseInt(formData.age) >= 18 ? 'Digital Signature' : 'Parent/Guardian Digital Signature'} *
+                {parseInt(formData.age) >= 18 ? t('digital_signature') : t('parent_guardian_digital_signature')} *
               </label>
               <input
                 type="text"
@@ -527,13 +535,13 @@ export default function YouthCampForm() {
                 className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-gold ${
                   errors.parentSignature ? 'border-red-500' : 'border-gray-300'
                 }`}
-                placeholder={parseInt(formData.age) >= 18 ? "Type your full name as digital signature" : "Type parent/guardian full name as digital signature"}
+                placeholder={parseInt(formData.age) >= 18 ? t('digital_signature_placeholder') : t('parent_digital_signature_placeholder')}
               />
               {errors.parentSignature && <p className="text-red-500 text-sm mt-1">{errors.parentSignature}</p>}
               <p className="text-xs text-gray-500 mt-1">
                 {parseInt(formData.age) >= 18 
-                  ? "By typing your name above, you are providing a digital signature and agreeing to all terms as an adult participant."
-                  : "By typing your name above as parent/guardian, you are providing a digital signature and agreeing to all terms on behalf of your minor child."
+                  ? t('digital_signature_agreement')
+                  : t('adult_signature_agreement')
                 }
               </p>
             </div>
@@ -557,14 +565,15 @@ export default function YouthCampForm() {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                Submitting Registration...
+                {t('submitting_registration')}
               </span>
             ) : (
-              'Submit Registration'
+              t('submit_registration')
             )}
           </button>
         </div>
       </form>
     </div>
+    </>
   );
 } 

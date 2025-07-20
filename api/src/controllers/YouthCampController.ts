@@ -167,7 +167,7 @@ export class YouthCampController {
   async getRegistrationStats(year?: number): Promise<{
     total: number;
     byStatus: Record<string, number>;
-    byGender: Record<string, number>;
+    bySex: Record<string, number>;
     averageAge: number;
   }> {
     try {
@@ -189,13 +189,13 @@ export class YouthCampController {
         return acc;
       }, {} as Record<string, number>);
 
-      // Get gender breakdown
-      const genderStats = await YouthCampRegistration.aggregate([
+      // Get sex breakdown
+      const sexStats = await YouthCampRegistration.aggregate([
         { $match: query },
-        { $group: { _id: '$gender', count: { $sum: 1 } } }
+        { $group: { _id: '$sex', count: { $sum: 1 } } }
       ]);
 
-      const byGender = genderStats.reduce((acc: Record<string, number>, stat: any) => {
+      const bySex = sexStats.reduce((acc: Record<string, number>, stat: any) => {
         acc[stat._id] = stat.count;
         return acc;
       }, {} as Record<string, number>);
@@ -211,7 +211,7 @@ export class YouthCampController {
       return {
         total,
         byStatus,
-        byGender,
+        bySex,
         averageAge
       };
     } catch (error) {

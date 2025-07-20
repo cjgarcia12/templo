@@ -91,6 +91,101 @@ interface TranslationKeys {
   get_involved: string;
   get_involved_desc: string;
   contact_learn_more: string;
+
+  // Youth Camp Form
+  youth_camp_registration: string;
+  youth_camp_dates: string;
+  youth_camp_description: string;
+  
+  // Form Sections
+  personal_information: string;
+  contact_information: string;
+  emergency_contact: string;
+  special_requirements_medical: string;
+  liability_waiver_agreement: string;
+  
+  // Form Fields
+  participant_name: string;
+  participant_name_placeholder: string;
+  parent_guardian_name: string;
+  parent_guardian_name_placeholder: string;
+  sex: string;
+  select_sex: string;
+  male: string;
+  female: string;
+  age: string;
+  age_placeholder: string;
+  contact_phone: string;
+  contact_phone_placeholder: string;
+  contact_email: string;
+  contact_email_placeholder: string;
+  emergency_contact_name: string;
+  emergency_contact_name_placeholder: string;
+  emergency_contact_phone: string;
+  emergency_contact_phone_placeholder: string;
+  relationship: string;
+  relationship_placeholder: string;
+  special_accommodations: string;
+  special_accommodations_placeholder: string;
+  medical_conditions: string;
+  medical_conditions_placeholder: string;
+  allergies: string;
+  allergies_placeholder: string;
+  dietary_restrictions: string;
+  dietary_restrictions_placeholder: string;
+  digital_signature: string;
+  parent_guardian_digital_signature: string;
+  digital_signature_placeholder: string;
+  parent_digital_signature_placeholder: string;
+  
+  // Validation Messages
+  participant_name_required: string;
+  parent_guardian_name_required: string;
+  sex_required: string;
+  age_required: string;
+  age_must_be_13_older: string;
+  contact_phone_required: string;
+  valid_phone_number: string;
+  contact_email_required: string;
+  valid_email_address: string;
+  emergency_contact_name_required: string;
+  emergency_contact_phone_required: string;
+  emergency_contact_relation_required: string;
+  parent_signature_required: string;
+  waiver_must_be_accepted: string;
+  
+  // Waiver Section
+  waiver_agreement_accepted: string;
+  waiver_acceptance_required: string;
+  view_full_waiver: string;
+  click_read_complete_waiver: string;
+  waiver_summary: string;
+  digital_signature_agreement: string;
+  adult_signature_agreement: string;
+  
+  // Buttons and Actions
+  submit_registration: string;
+  submitting_registration: string;
+  submit_another_registration: string;
+  return_to_home: string;
+  
+  // Success Modal
+  registration_successful: string;
+  registration_submitted_successfully: string;
+  camp_dates: string;
+  registration_id: string;
+  whats_next: string;
+  review_registration_2_3_days: string;
+  receive_confirmation_email: string;
+  contact_us_questions: string;
+  contact_us_modal: string;
+  address: string;
+  phone: string;
+  questions: string;
+  
+  // Error Messages
+  registration_failed: string;
+  network_error: string;
 }
 
 type TranslationsType = {
@@ -193,7 +288,102 @@ const translations: TranslationsType = {
     'men_women_ministry_desc': 'Building strong relationships and spiritual growth through fellowship and study groups for both men and women.',
     'get_involved': 'Want to Get Involved?',
     'get_involved_desc': 'We believe everyone has unique gifts and talents that can contribute to the church body. We\'d love to help you find your place to serve!',
-    'contact_learn_more': 'Contact Us to Learn More'
+    'contact_learn_more': 'Contact Us to Learn More',
+
+    // Youth Camp Form
+    'youth_camp_registration': 'Youth Camp Registration 2025',
+    'youth_camp_dates': 'August 6-9, 2025',
+    'youth_camp_description': 'Ages 13+ • A fun-filled Christian camp experience',
+    
+    // Form Sections
+    'personal_information': 'Personal Information',
+    'contact_information': 'Contact Information',
+    'emergency_contact': 'Emergency Contact',
+    'special_requirements_medical': 'Special Requirements & Medical Information',
+    'liability_waiver_agreement': 'Liability Waiver & Agreement',
+    
+    // Form Fields
+    'participant_name': 'Participant Name',
+    'participant_name_placeholder': 'Enter participant\'s full name',
+    'parent_guardian_name': 'Parent/Guardian Name',
+    'parent_guardian_name_placeholder': 'Enter parent/guardian\'s full name',
+    'sex': 'Sex',
+    'select_sex': 'Select sex',
+    'male': 'Male',
+    'female': 'Female',
+    'age': 'Age',
+    'age_placeholder': 'Age (13+)',
+    'contact_phone': 'Contact Phone',
+    'contact_phone_placeholder': '(XXX) XXX-XXXX',
+    'contact_email': 'Contact Email',
+    'contact_email_placeholder': 'Enter email address',
+    'emergency_contact_name': 'Emergency Contact Name',
+    'emergency_contact_name_placeholder': 'Emergency contact full name',
+    'emergency_contact_phone': 'Emergency Contact Phone',
+    'emergency_contact_phone_placeholder': '(XXX) XXX-XXXX',
+    'relationship': 'Relationship',
+    'relationship_placeholder': 'e.g., Grandparent, Aunt, etc.',
+    'special_accommodations': 'Special Accommodations',
+    'special_accommodations_placeholder': 'Any special accommodations needed...',
+    'medical_conditions': 'Medical Conditions',
+    'medical_conditions_placeholder': 'Any medical conditions we should know about...',
+    'allergies': 'Allergies',
+    'allergies_placeholder': 'Any allergies (food, medication, environmental)...',
+    'dietary_restrictions': 'Dietary Restrictions',
+    'dietary_restrictions_placeholder': 'Any dietary restrictions or preferences...',
+    'digital_signature': 'Digital Signature',
+    'parent_guardian_digital_signature': 'Parent/Guardian Digital Signature',
+    'digital_signature_placeholder': 'Type your full name as digital signature',
+    'parent_digital_signature_placeholder': 'Type parent/guardian full name as digital signature',
+    
+    // Validation Messages
+    'participant_name_required': 'Participant name is required',
+    'parent_guardian_name_required': 'Parent/Guardian name is required',
+    'sex_required': 'Sex is required',
+    'age_required': 'Age is required',
+    'age_must_be_13_older': 'Age must be 13 or older',
+    'contact_phone_required': 'Contact phone is required',
+    'valid_phone_number': 'Please enter a valid phone number',
+    'contact_email_required': 'Contact email is required',
+    'valid_email_address': 'Please enter a valid email address',
+    'emergency_contact_name_required': 'Emergency contact name is required',
+    'emergency_contact_phone_required': 'Emergency contact phone is required',
+    'emergency_contact_relation_required': 'Emergency contact relation is required',
+    'parent_signature_required': 'Parent/Guardian signature is required',
+    'waiver_must_be_accepted': 'You must accept the waiver to complete registration.',
+    
+    // Waiver Section
+    'waiver_agreement_accepted': 'I have read, understood, and agree to the terms of the comprehensive liability waiver above.',
+    'waiver_acceptance_required': 'Required: You must accept this waiver to complete registration.',
+    'view_full_waiver': 'View Full Waiver (English/Spanish)',
+    'click_read_complete_waiver': 'Click here to read the complete waiver in English or Spanish',
+    'waiver_summary': 'By participating in the Youth Camp program organized by Templo Adoracion Y Alabanza, you acknowledge and assume all risks, release the church from liability, and agree to indemnify the church. This includes risks of injury, property damage, or death from camp activities, transportation, and facilities.',
+    'digital_signature_agreement': 'By typing your name above, you are providing a digital signature and agreeing to all terms as an adult participant.',
+    'adult_signature_agreement': 'By typing your name above as parent/guardian, you are providing a digital signature and agreeing to all terms on behalf of your minor child.',
+    
+    // Buttons and Actions
+    'submit_registration': 'Submit Registration',
+    'submitting_registration': 'Submitting Registration...',
+    'submit_another_registration': 'Submit Another Registration',
+    'return_to_home': 'Return to Home',
+    
+    // Success Modal
+    'registration_successful': 'Registration Successful!',
+    'registration_submitted_successfully': 'registration for Youth Camp 2025 has been submitted successfully!',
+    'camp_dates': 'Camp Dates',
+    'registration_id': 'Registration ID',
+    'whats_next': 'What\'s Next?',
+    'review_registration_2_3_days': '• We will review your registration within 2-3 business days',
+    'receive_confirmation_email': '• You\'ll receive a confirmation email with payment details',
+    'contact_us_questions': '• Feel free to contact us with any questions',
+    'contact_us_modal': 'Contact Us',
+    'address': 'Address',
+    'phone': 'Phone',
+    'questions': 'Questions?',
+    
+    // Error Messages
+    'registration_failed': 'Registration failed. Please try again.',
+    'network_error': 'Network error. Please check your connection and try again.'
   },
   es: {
     // Navbar
@@ -281,7 +471,102 @@ const translations: TranslationsType = {
     'men_women_ministry_desc': 'Construyendo relaciones sólidas y crecimiento espiritual a través de grupos de compañerismo y estudio para hombres y mujeres.',
     'get_involved': '¿Quiere Involucrarse?',
     'get_involved_desc': 'Creemos que todos tienen dones y talentos únicos que pueden contribuir al cuerpo de la iglesia. ¡Nos encantaría ayudarle a encontrar su lugar para servir!',
-    'contact_learn_more': 'Contáctenos para Obtener Más Información'
+    'contact_learn_more': 'Contáctenos para Obtener Más Información',
+
+    // Youth Camp Form
+    'youth_camp_registration': 'Inscripción al Campamento Juvenil 2025',
+    'youth_camp_dates': '6-9 de Agosto, 2025',
+    'youth_camp_description': 'Edades 13+ • Una experiencia cristiana llena de diversión',
+    
+    // Form Sections
+    'personal_information': 'Información Personal',
+    'contact_information': 'Información de Contacto',
+    'emergency_contact': 'Contacto de Emergencia',
+    'special_requirements_medical': 'Requisitos Especiales e Información Médica',
+    'liability_waiver_agreement': 'Exención de Responsabilidad y Acuerdo',
+    
+    // Form Fields
+    'participant_name': 'Nombre del Participante',
+    'participant_name_placeholder': 'Ingrese el nombre completo del participante',
+    'parent_guardian_name': 'Nombre del Padre/Tutor',
+    'parent_guardian_name_placeholder': 'Ingrese el nombre completo del padre/tutor',
+    'sex': 'Sexo',
+    'select_sex': 'Seleccionar sexo',
+    'male': 'Masculino',
+    'female': 'Femenino',
+    'age': 'Edad',
+    'age_placeholder': 'Edad (13+)',
+    'contact_phone': 'Teléfono de Contacto',
+    'contact_phone_placeholder': '(XXX) XXX-XXXX',
+    'contact_email': 'Correo de Contacto',
+    'contact_email_placeholder': 'Ingrese dirección de correo',
+    'emergency_contact_name': 'Nombre del Contacto de Emergencia',
+    'emergency_contact_name_placeholder': 'Nombre completo del contacto de emergencia',
+    'emergency_contact_phone': 'Teléfono del Contacto de Emergencia',
+    'emergency_contact_phone_placeholder': '(XXX) XXX-XXXX',
+    'relationship': 'Parentesco',
+    'relationship_placeholder': 'ej., Abuelo, Tía, etc.',
+    'special_accommodations': 'Adaptaciones Especiales',
+    'special_accommodations_placeholder': 'Cualquier adaptación especial necesaria...',
+    'medical_conditions': 'Condiciones Médicas',
+    'medical_conditions_placeholder': 'Cualquier condición médica que debamos saber...',
+    'allergies': 'Alergias',
+    'allergies_placeholder': 'Cualquier alergia (alimentaria, medicamentos, ambiental)...',
+    'dietary_restrictions': 'Restricciones Dietéticas',
+    'dietary_restrictions_placeholder': 'Cualquier restricción o preferencia dietética...',
+    'digital_signature': 'Firma Digital',
+    'parent_guardian_digital_signature': 'Firma Digital del Padre/Tutor',
+    'digital_signature_placeholder': 'Escriba su nombre completo como firma digital',
+    'parent_digital_signature_placeholder': 'Escriba el nombre completo del padre/tutor como firma digital',
+    
+    // Validation Messages
+    'participant_name_required': 'El nombre del participante es requerido',
+    'parent_guardian_name_required': 'El nombre del padre/tutor es requerido',
+    'sex_required': 'El sexo es requerido',
+    'age_required': 'La edad es requerida',
+    'age_must_be_13_older': 'La edad debe ser 13 años o mayor',
+    'contact_phone_required': 'El teléfono de contacto es requerido',
+    'valid_phone_number': 'Por favor ingrese un número telefónico válido',
+    'contact_email_required': 'El correo de contacto es requerido',
+    'valid_email_address': 'Por favor ingrese una dirección de correo válida',
+    'emergency_contact_name_required': 'El nombre del contacto de emergencia es requerido',
+    'emergency_contact_phone_required': 'El teléfono del contacto de emergencia es requerido',
+    'emergency_contact_relation_required': 'El parentesco del contacto de emergencia es requerido',
+    'parent_signature_required': 'La firma del padre/tutor es requerida',
+    'waiver_must_be_accepted': 'Debe aceptar la exención para completar la inscripción.',
+    
+    // Waiver Section
+    'waiver_agreement_accepted': 'He leído, entendido y acepto los términos de la exención integral de responsabilidad arriba.',
+    'waiver_acceptance_required': 'Requerido: Debe aceptar esta exención para completar la inscripción.',
+    'view_full_waiver': 'Ver Exención Completa (Inglés/Español)',
+    'click_read_complete_waiver': 'Haga clic aquí para leer la exención completa en inglés o español',
+    'waiver_summary': 'Al participar en el programa del Campamento Juvenil organizado por Templo Adoración Y Alabanza, usted reconoce y asume todos los riesgos, libera a la iglesia de responsabilidad, y acepta indemnizar a la iglesia. Esto incluye riesgos de lesiones, daños a la propiedad, o muerte por actividades del campamento, transporte, e instalaciones.',
+    'digital_signature_agreement': 'Al escribir su nombre arriba, está proporcionando una firma digital y aceptando todos los términos como participante adulto.',
+    'adult_signature_agreement': 'Al escribir su nombre arriba como padre/tutor, está proporcionando una firma digital y aceptando todos los términos en nombre de su hijo menor.',
+    
+    // Buttons and Actions
+    'submit_registration': 'Enviar Inscripción',
+    'submitting_registration': 'Enviando Inscripción...',
+    'submit_another_registration': 'Enviar Otra Inscripción',
+    'return_to_home': 'Regresar al Inicio',
+    
+    // Success Modal
+    'registration_successful': '¡Inscripción Exitosa!',
+    'registration_submitted_successfully': 'inscripción para el Campamento Juvenil 2025 ha sido enviada exitosamente!',
+    'camp_dates': 'Fechas del Campamento',
+    'registration_id': 'ID de Inscripción',
+    'whats_next': '¿Qué Sigue?',
+    'review_registration_2_3_days': '• Revisaremos su inscripción dentro de 2-3 días hábiles',
+    'receive_confirmation_email': '• Recibirá un correo de confirmación con detalles de pago',
+    'contact_us_questions': '• No dude en contactarnos con cualquier pregunta',
+    'contact_us_modal': 'Contáctenos',
+    'address': 'Dirección',
+    'phone': 'Teléfono',
+    'questions': '¿Preguntas?',
+    
+    // Error Messages
+    'registration_failed': 'La inscripción falló. Por favor intente de nuevo.',
+    'network_error': 'Error de red. Por favor verifique su conexión e intente de nuevo.'
   }
 };
 
