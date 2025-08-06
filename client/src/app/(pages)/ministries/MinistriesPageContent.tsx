@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import React from "react";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -9,6 +10,7 @@ interface Ministry {
   description: string;
   leader: string;
   icon: React.ReactNode;
+  image?: string; // Add image property
 }
 
 interface MinistriesPageContentProps {
@@ -36,11 +38,25 @@ export default function MinistriesPageContent({ ministries }: MinistriesPageCont
           {ministries.map((ministry, index) => (
             <article
               key={index}
-              className="ministry-card bg-white rounded-xl shadow-lg overflow-hidden group"
+              className="ministry-card bg-white rounded-xl shadow-lg overflow-hidden group flex flex-col"
               itemScope 
               itemType="https://schema.org/Organization"
             >
-              <div className="p-6 md:p-8 flex flex-col h-full">
+              {/* Ministry Image */}
+              {ministry.image && (
+                <div className="relative h-48 overflow-hidden flex-shrink-0">
+                  <Image
+                    src={ministry.image}
+                    alt={`${ministry.title} photo`}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300"></div>
+                </div>
+              )}
+              
+              <div className="p-6 md:p-8 flex flex-col flex-grow">
                 <div className="flex items-center justify-between mb-5">
                   <div className="text-primary-gold group-hover:scale-110 transition-transform duration-300" aria-hidden="true">
                     {ministry.icon}
@@ -67,7 +83,7 @@ export default function MinistriesPageContent({ ministries }: MinistriesPageCont
                    index === 4 ? t('ushers_prayer_desc') :
                    t('men_women_ministry_desc')}
                 </p>
-                <div className="text-sm font-medium text-primary-gold border-t border-primary-gold/20 pt-4">
+                <div className="text-sm font-medium text-primary-gold border-t border-primary-gold/20 pt-4 mt-auto">
                   {ministry.leader}
                 </div>
               </div>

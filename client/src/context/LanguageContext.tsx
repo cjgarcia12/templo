@@ -11,6 +11,9 @@ interface TranslationKeys {
   ministries: string;
   events: string;
   sermons: string;
+
+  // Hero section
+  hero_subtitle: string;
   
   // Services page
   our_services: string;
@@ -210,6 +213,9 @@ const translations: TranslationsType = {
     'events': 'Events',
     'sermons': 'Sermons',
     
+          // Hero section
+      'hero_subtitle': 'A welcoming community of faith in Wilmington, NC where everyone can experience God\'s love and grace.',
+    
     // Services page
     'our_services': 'Our Services',
     'join_us': 'Join us in worship, prayer, and study as we grow together in faith. All are welcome!',
@@ -392,6 +398,9 @@ const translations: TranslationsType = {
     'ministries': 'Ministerios',
     'events': 'Eventos',
     'sermons': 'Sermones',
+    
+          // Hero section
+      'hero_subtitle': 'Una comunidad acogedora de fe en Wilmington, NC donde todos pueden experimentar el amor y la gracia de Dios.',
     
     // Services page
     'our_services': 'Nuestros Servicios',
