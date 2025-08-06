@@ -224,8 +224,8 @@ export class YouthCampController {
    * Check if registration is still open
    */
   isRegistrationOpen(): boolean {
-    // Registration is open until July 31, 2025
-    const registrationDeadline = new Date('2025-07-31T23:59:59');
+    // Registration is open until August 10, 2025
+    const registrationDeadline = new Date('2025-08-10T23:59:59');
     const now = new Date();
     
     return now < registrationDeadline;
@@ -240,7 +240,7 @@ export class YouthCampController {
     daysRemaining: number;
     campDates: string;
   } {
-    const deadline = new Date('2025-07-31T23:59:59');
+    const deadline = new Date('2025-08-10T23:59:59');
     const now = new Date();
     const isOpen = now < deadline;
     const daysRemaining = Math.max(0, Math.ceil((deadline.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)));
