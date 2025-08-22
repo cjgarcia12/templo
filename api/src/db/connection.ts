@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import getConfig from '@/config';
+import getConfig from '../config';
 
 const config = getConfig();
 const { MONGODB_URI, NODE_ENV } = config;
