@@ -1,5 +1,5 @@
 import * as cron from 'node-cron';
-import getConfig from '@/config';
+import getConfig from '../config';
 
 const config = getConfig();
 const { CRON_ENABLED, SYNC_SCHEDULE, API_SECRET_KEY, PORT, NODE_ENV } = config;

@@ -1,6 +1,6 @@
 import rateLimit from 'express-rate-limit';
 import { Request } from 'express';
-import getConfig from '@/config';
+import getConfig from '../config';
 
 const config = getConfig();
 const { RATE_LIMIT_WINDOW_MS, RATE_LIMIT_MAX_REQUESTS } = config;

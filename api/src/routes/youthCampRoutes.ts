@@ -1,8 +1,8 @@
 import { Router, Request, Response } from 'express';
-import { YouthCampController } from '@/controllers/YouthCampController';
-import { requireApiKey, optionalApiKey } from '@/middleware/auth';
-import { catchAsync, AppError } from '@/middleware/errorHandler';
-import { registrationLimiter, generalLimiter } from '@/middleware/rateLimiting';
+import { YouthCampController } from '../controllers/YouthCampController';
+import { requireApiKey, optionalApiKey } from '../middleware/auth';
+import { catchAsync, AppError } from '../middleware/errorHandler';
+import { registrationLimiter, generalLimiter } from '../middleware/rateLimiting';
 
 const router = Router();
 const youthCampController = new YouthCampController();

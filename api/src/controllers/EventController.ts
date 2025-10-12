@@ -1,7 +1,7 @@
 import { google, calendar_v3 } from 'googleapis';
-import Event, { IEvent } from '@/models/Event';
-import connectDB from '@/db/connection';
-import getConfig from '@/config';
+import Event, { IEvent } from '../models/Event';
+import connectDB from '../db/connection';
+import getConfig from '../config';
 
 const config = getConfig();
 const { GOOGLE_API_KEY, GOOGLE_CALENDAR_ID } = config;

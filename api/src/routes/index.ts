@@ -2,9 +2,9 @@ import { Router } from 'express';
 import videoRoutes from './videoRoutes';
 import eventRoutes from './eventRoutes';
 import youthCampRoutes from './youthCampRoutes';
-import { getCronStatus } from '@/services/cronService';
-import { requireApiKey } from '@/middleware/auth';
-import { catchAsync } from '@/middleware/errorHandler';
+import { getCronStatus } from '../services/cronService';
+import { requireApiKey } from '../middleware/auth';
+import { catchAsync } from '../middleware/errorHandler';
 
 const router = Router();
 

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import getConfig from '@/config';
+import getConfig from '../config';
 
 const config = getConfig();
 const { NODE_ENV } = config;

@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import YouthCampRegistration, { IYouthCampRegistration } from '@/models/YouthCampRegistration';
-import connectDB from '@/db/connection';
-import { youthCampRegistrationSchema, YouthCampRegistrationInput } from '@/validation/youthCampValidation';
-import { AppError } from '@/middleware/errorHandler';
+import YouthCampRegistration, { IYouthCampRegistration } from '../models/YouthCampRegistration';
+import connectDB from '../db/connection';
+import { youthCampRegistrationSchema, YouthCampRegistrationInput } from '../validation/youthCampValidation';
+import { AppError } from '../middleware/errorHandler';
 
 export class YouthCampController {
   /**

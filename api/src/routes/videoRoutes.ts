@@ -1,8 +1,8 @@
 import { Router, Request, Response } from 'express';
-import { VideoController } from '@/controllers/VideoController';
-import { requireApiKey } from '@/middleware/auth';
-import { catchAsync } from '@/middleware/errorHandler';
-import { syncLimiter, generalLimiter } from '@/middleware/rateLimiting';
+import { VideoController } from '../controllers/VideoController';
+import { requireApiKey } from '../middleware/auth';
+import { catchAsync } from '../middleware/errorHandler';
+import { syncLimiter, generalLimiter } from '../middleware/rateLimiting';
 
 const router = Router();
 const videoController = new VideoController();

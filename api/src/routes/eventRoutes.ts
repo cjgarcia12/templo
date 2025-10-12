@@ -1,8 +1,8 @@
 import { Router, Request, Response } from 'express';
-import { EventController } from '@/controllers/EventController';
-import { requireApiKey } from '@/middleware/auth';
-import { catchAsync } from '@/middleware/errorHandler';
-import { syncLimiter, generalLimiter } from '@/middleware/rateLimiting';
+import { EventController } from '../controllers/EventController';
+import { requireApiKey } from '../middleware/auth';
+import { catchAsync } from '../middleware/errorHandler';
+import { syncLimiter, generalLimiter } from '../middleware/rateLimiting';
 
 const router = Router();
 const eventController = new EventController();

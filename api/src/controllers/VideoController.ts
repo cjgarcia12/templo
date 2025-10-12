@@ -1,7 +1,7 @@
 import { google } from 'googleapis';
-import Video, { IVideo } from '@/models/Video';
-import connectDB from '@/db/connection';
-import getConfig from '@/config';
+import Video, { IVideo } from '../models/Video';
+import connectDB from '../db/connection';
+import getConfig from '../config';
 
 const config = getConfig();
 const { GOOGLE_API_KEY, YOUTUBE_CHANNEL_ID } = config;
