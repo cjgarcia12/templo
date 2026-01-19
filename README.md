@@ -250,14 +250,5 @@ CRON_ENABLED=false
 - Sync endpoints: 5 requests per hour
 - Registration: 10 requests per hour
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
-## 📄 License
 
 This project is licensed under the MIT License. 
